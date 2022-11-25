@@ -17,17 +17,17 @@ void Sudoku::readBoard(int (&board)[SIZE])
 
 }
 
-bool Sudoku::checkRow()
+bool Sudoku::checkRow(int number, int x, int y, int (&board)[SIZE])
 {
 
 }
 
-bool Sudoku::checkColumn()
+bool Sudoku::checkColumn(int number, int x, int y, int (&board)[SIZE])
 {
 
 }
 
-bool Sudoku::checkBlock()
+bool Sudoku::checkBlock(int number, int x, int y, int (&board)[SIZE])
 {
 
 }

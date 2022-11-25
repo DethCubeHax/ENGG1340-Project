@@ -9,9 +9,9 @@ class Sudoku
         void printBoard(int (&board)[SIZE]);
         void readBoard(int (&board)[SIZE]);
     private:
-        bool checkRow();
-        bool checkColumn();
-        bool checkBlock();
+        bool checkRow(int number, int x, int y, int (&board)[SIZE]);
+        bool checkColumn(int number, int x, int y, int (&board)[SIZE]);
+        bool checkBlock(int number, int x, int y, int (&board)[SIZE]);
 };
 
 #endif
