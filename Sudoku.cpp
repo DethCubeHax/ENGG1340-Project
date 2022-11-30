@@ -48,6 +48,7 @@ bool Sudoku::checkRow(int number, int x, int y, int (&board)[SIZE][SIZE])
     for ( int i = 0 ; i < SIZE ; i++){
         if ( board[x][i] == number ){
             notIn = false;
+            break;
         }
     }
     return notIn;
@@ -59,6 +60,7 @@ bool Sudoku::checkColumn(int number, int x, int y, int (&board)[SIZE][SIZE])
     for ( int i = 0 ; i < SIZE ; i++){
         if ( board[i][y] == number ){
             notIn = false;
+            break;
         }
     }
     return notIn;
