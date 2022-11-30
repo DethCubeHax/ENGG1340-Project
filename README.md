@@ -9,10 +9,12 @@ check if the number in:
 
 notIN=true;
 for ( int i = 0 ; i < SIZE ; i+=3){
-    for ( int j = 0 ; i < 3 ; j++){
-        if ( [i][j] == number ){
+    for ( int j = 0 ; j < SIZE ; j+=3){
+        for ( int k = 0 ; k < 3 ; k++){
+            if ( [i][j] == number ){
             notIn = false;
             break;
+            }
         }
     }
 }
