@@ -7,5 +7,5 @@ int player2Board[SIZE*SIZE] = {0};
 
 int main()
 {
-
+    
 }

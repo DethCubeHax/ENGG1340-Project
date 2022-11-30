@@ -1,10 +1,9 @@
 #include "Sudoku.h"
-#include "main.cpp"
 #include "GlobalVars.h"
 
 bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE])
 {
-
+    if (checkBlock(number, x, y, board) && checkColumn(number, x, y, board) && checkColumn(number, x, y, board)) return true;
 }
 
 void Sudoku::printBoard(int (&board)[SIZE])
