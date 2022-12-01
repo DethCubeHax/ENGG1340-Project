@@ -9,7 +9,28 @@ using namespace std;
 
 bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
-    if (checkBlock(number, x, y, board) && checkColumn(number, x, y, board) && checkColumn(number, x, y, board)) return true;
+    if (checkRow(number, x, y, board) && checkColumn(number, x, y, board) && checkBlock(number, x, y, board) ) return true;
+}
+
+void Sudoku::generateBoard(int (&board)[SIZE][SIZE]){
+    for ( int i = 0 ; i < 9 ; i++){
+        //cout<<i<<endl;
+        for ( int j = 0 ; j < 9 ; j++ ){
+            //cout<<j;
+            for ( int k = 1; k < 10 ; k++){
+                if ( numberIsPossible( k, j, i, board ) ){
+                    board[i][j]=k;
+                    break;
+                }
+                //else if ( k ==1 and j == 6 and i == 1 and checkBlock( k, j, i, board )){
+                    //cout<<j<<i<<endl;
+                    //break;
+            //}
+            }
+            
+        }
+        //cout<<endl;
+    }
 }
 
 void Sudoku::printBoard(int (&board)[SIZE][SIZE])
@@ -24,7 +45,7 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
 
 void Sudoku::readBoard(int (&board)[SIZE][SIZE])
 {   
-    ifstream fin("game.txt");                 // Open the file
+    ifstream fin("test.txt");                 // Open the file
     int yCount = 0;
     string line;
     while (getline(fin, line))
@@ -46,7 +67,7 @@ bool Sudoku::checkRow(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
     bool notIn = true;
     for ( int i = 0 ; i < SIZE ; i++){
-        if ( board[x][i] == number ){
+        if ( board[i][x] == number ){
             notIn = false;
             break;
         }
@@ -58,7 +79,7 @@ bool Sudoku::checkColumn(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
     bool notIn = true;
     for ( int i = 0 ; i < SIZE ; i++){
-        if ( board[i][y] == number ){
+        if ( board[y][i] == number ){
             notIn = false;
             break;
         }
@@ -69,32 +90,32 @@ bool Sudoku::checkColumn(int number, int x, int y, int (&board)[SIZE][SIZE])
 bool Sudoku::checkBlock(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
     int startRow = 0, startColumn = 0;
-    if ( 0 <= x <= 2 ){
+    if ( 0 <= y and y <= 2 ){
         startRow = 0;
     }
-    else if ( 3 <= x <= 5 ){
+    else if ( 3 <= y and y <= 5 ){
         startRow = 3;
     }
-    else{
+    else if ( 6 <= y and y <= 8 ) {
         startRow = 6;
     }
 
-    if ( 0 <= y <= 2 ){
+    if ( 0 <= x and x <= 2 ){
         startColumn = 0;
     }
-    else if ( 3 <= y <= 5 ){
+    else if ( 3 <= x and x <= 5 ){
         startColumn = 3;
     }
-    else{
+    else if ( 6 <= x and x<= 8 ){
         startColumn = 6;
     }
-    
+    //cout<<y<<x<<' '<<startColumn<<startRow<<endl;
     bool notIn = true;
     for ( int i = startRow ; i < startRow+3 ; i++){
         for ( int j = startColumn ; j < startColumn+3 ; j++){
             if ( board[i][j] == number ){
-            notIn = false;
-            break;
+                notIn = false;
+                break;
             }
         }
     }

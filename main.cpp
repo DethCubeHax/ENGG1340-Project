@@ -10,5 +10,6 @@ int player2Board[SIZE][SIZE] = {0};
 int main()
 {
     sudoku.readBoard(player1Board);
+    sudoku.generateBoard(player1Board);
     sudoku.printBoard(player1Board);
 }
