@@ -5,6 +5,7 @@ class GlobalVars
 {
     public:
         #define SIZE 9
+
 };
 
 #endif

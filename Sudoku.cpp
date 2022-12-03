@@ -4,12 +4,20 @@
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
+struct BoardState
+{
+    int board[SIZE][SIZE];
+    BoardState *next;
+    BoardState *previous;
+    bool failed;
+};
 
 using namespace std;
 
 bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
-    if (checkRow(number, x, y, board) && checkColumn(number, x, y, board) && checkBlock(number, x, y, board) ) return true;
+    if (checkRow(number, x, board) && checkColumn(number, y, board) && checkBlock(number, x, y, board) ) return true;
+    return false;
 }
 
 void Sudoku::generateBoard(int (&board)[SIZE][SIZE]){
@@ -35,8 +43,10 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE]){
 
 void Sudoku::printBoard(int (&board)[SIZE][SIZE])
 {
-    for ( int i = 0 ; i < SIZE ; i++ ){
-        for ( int j = 0 ; j < SIZE ; j++ ){
+    for ( int i = 0 ; i < SIZE ; i++ )
+    {
+        for ( int j = 0 ; j < SIZE ; j++ )
+        {
             cout<<board[i][j]<<' ';
         }
         cout<<endl;
@@ -45,7 +55,7 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
 
 void Sudoku::readBoard(int (&board)[SIZE][SIZE])
 {   
-    ifstream fin("test.txt");                 // Open the file
+    ifstream fin("game.txt");                 // Open the file
     int yCount = 0;
     string line;
     while (getline(fin, line))
@@ -63,61 +73,96 @@ void Sudoku::readBoard(int (&board)[SIZE][SIZE])
 
 }
 
-bool Sudoku::checkRow(int number, int x, int y, int (&board)[SIZE][SIZE])
+bool Sudoku::checkRow(int number, int y, int (&board)[SIZE][SIZE])
 {
-    bool notIn = true;
-    for ( int i = 0 ; i < SIZE ; i++){
-        if ( board[i][x] == number ){
-            notIn = false;
-            break;
-        }
+    for ( int i = 0 ; i < SIZE ; i++ )
+    {
+        if ( board[y][i] == number ) return false;
     }
-    return notIn;
+    return true;
 }
 
-bool Sudoku::checkColumn(int number, int x, int y, int (&board)[SIZE][SIZE])
+bool Sudoku::checkColumn(int number, int x, int (&board)[SIZE][SIZE])
 {
-    bool notIn = true;
-    for ( int i = 0 ; i < SIZE ; i++){
-        if ( board[y][i] == number ){
-            notIn = false;
-            break;
-        }
+    for ( int i = 0 ; i < SIZE ; i++ )
+    {
+        if ( board[i][x] == number ) return false;
     }
-    return notIn;
+    return true;
 }
 
 bool Sudoku::checkBlock(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
-    int startRow = 0, startColumn = 0;
-    if ( 0 <= y and y <= 2 ){
-        startRow = 0;
-    }
-    else if ( 3 <= y and y <= 5 ){
-        startRow = 3;
-    }
-    else if ( 6 <= y and y <= 8 ) {
-        startRow = 6;
-    }
-
-    if ( 0 <= x and x <= 2 ){
-        startColumn = 0;
-    }
-    else if ( 3 <= x and x <= 5 ){
-        startColumn = 3;
-    }
-    else if ( 6 <= x and x<= 8 ){
-        startColumn = 6;
-    }
-    //cout<<y<<x<<' '<<startColumn<<startRow<<endl;
     bool notIn = true;
-    for ( int i = startRow ; i < startRow+3 ; i++){
-        for ( int j = startColumn ; j < startColumn+3 ; j++){
-            if ( board[i][j] == number ){
+    int xBlock = x/3;
+    int yBlock = y/3;
+    for ( int i = 0 ; i < 3 ; i++){
+        for ( int j = 0 ; j < 3 ; j++){
+            if ( board[yBlock*3+i][xBlock*3+j] == number ){
                 notIn = false;
                 break;
             }
         }
     }
     return notIn;
+}
+
+bool Sudoku::solveBoard(int (&board)[SIZE][SIZE], int x, int y)
+{
+    printBoard(board);
+    cout << "-----------------" << endl;
+    cout << "Iteration: " << x << ", " << y << endl;
+    BoardState *head = NULL;
+    if (board[y][x] == 0)
+    {
+        for (int i = 1; i < 10; i++)
+        {
+            if (numberIsPossible(i, x, y, board))
+            {
+                board[y][x] = i;
+                if (x == 8 && y == 8)
+                {
+                    return true;
+                }
+                else if (x == 8)
+                {
+                    if (solveBoard(board, 0, y + 1))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (solveBoard(board, x + 1, y))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        board[y][x] = 0;
+        return false;
+    }
+    else
+    {
+        if (x == 8 && y == 8)
+        {
+            return true;
+        }
+        else if (x == 8)
+        {
+            if (solveBoard(board, 0, y + 1))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (solveBoard(board, x + 1, y))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
