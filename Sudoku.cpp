@@ -3,11 +3,13 @@
 #include <sstream>
 #include <random>
 #include <chrono>
+#include <ctime>
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
 using namespace std;
 using namespace std::chrono;
+using std::ostream;
 
 random_device square; // obtain a random number from hardware
 random_device number; // obtain a random number from hardware
@@ -72,7 +74,7 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
         }
         for ( int j = 0 ; j < SIZE ; j++ )
         {
-            if (j == 3 || j == 6) cout << "| ";
+            if (j == 3 || j == 6) cout<< "| ";
             cout<<board[i][j]<<' ';
         }
         cout<<endl;
@@ -103,7 +105,10 @@ void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
 
     if (args == 'w')
     {
-        ofstream fout("test.txt");
+        ofstream fout("originalBoard.txt");
+        time_t ttime = time(0);
+        char* dt = ctime(&ttime);
+        fout<<dt;
         for ( int i = 0 ; i < SIZE ; i++ )
         {
             for ( int j = 0 ; j < SIZE ; j++ )
