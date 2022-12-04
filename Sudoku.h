@@ -10,10 +10,16 @@ class Sudoku
         void readOrSaveBoard(int (&board)[SIZE][SIZE], char args);
         void generateBoard (int (&board)[SIZE][SIZE]);
         bool solveBoard(int (&board)[SIZE][SIZE]);
+        void printList(BoardState *head);
     private:
         bool checkRow(int number, int y, int (&board)[SIZE][SIZE]);
         bool checkColumn(int number, int x, int (&board)[SIZE][SIZE]);
         bool checkBlock(int number, int x, int y, int (&board)[SIZE][SIZE]);
+        void addToList(BoardState *&head, int (&board)[SIZE][SIZE]);
+        void copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE]);
+        void eraseBoard(int (&board)[SIZE][SIZE]);
+        void eraseList(BoardState *&head);
+        
 };
 
 #endif

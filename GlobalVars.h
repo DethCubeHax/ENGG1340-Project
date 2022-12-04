@@ -1,11 +1,14 @@
 #ifndef GLOBALVARS_H
 #define GLOBALVARS_H
 
-class GlobalVars
-{
-    public:
-        #define SIZE 9
+#define SIZE 9
 
+struct BoardState
+{
+    int board[SIZE][SIZE];
+    BoardState *next;
+    BoardState *previous;
+    bool failed;
 };
 
 #endif

@@ -6,14 +6,6 @@
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
-struct BoardState
-{
-    int board[SIZE][SIZE];
-    BoardState *next;
-    BoardState *previous;
-    bool failed;
-};
-
 using namespace std;
 using namespace std::chrono;
 
@@ -23,6 +15,9 @@ mt19937 genSquare(square()); // seed the generator
 mt19937 genNumber(number()); // seed the generator
 uniform_int_distribution<> distrSquare(0, SIZE-1); // define the range
 uniform_int_distribution<> distrNumber(1, SIZE); // define the range
+
+extern BoardState *playerBoardHead;
+extern BoardState *computerBoardHead;
 
 
 uint64_t timeSinceBoot()
@@ -56,29 +51,13 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
     }
 
     int tmpBoard[SIZE][SIZE] = {0};
-    for (int i = 0; i<SIZE; i++)
-    {
-        for (int j = 0; j<SIZE; j++)
-        {
-            tmpBoard[i][j] = board[i][j];
-        }
-    }
+
+    copyBoard(tmpBoard, board);
+
     runTime = timeSinceBoot();
-    if (solveBoard(tmpBoard))
+    if (!solveBoard(tmpBoard))
     {
-        cout << "Board generated successfully" << endl;
-        printBoard(tmpBoard);
-        cout << "--------------------" << endl;
-    }
-    else
-    {
-        for (int i = 0; i<SIZE; i++)
-        {
-            for (int j = 0; j<SIZE; j++)
-            {
-                board[i][j] = 0;
-            }
-        }
+        eraseBoard(board);
         generateBoard(board);
     }
 }
@@ -177,6 +156,7 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
 {
     if (timeSinceBoot() - runTime > 100)
     {
+        eraseList(computerBoardHead);
         return false;
     }
     for (int i = 0; i < SIZE; i++)
@@ -190,6 +170,7 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
                     if (numberIsPossible(k, i, j, board))
                     {
                         board[i][j] = k;
+                        addToList(computerBoardHead, board);
                         if (solveBoard(board))
                         {
                             return true;
@@ -197,6 +178,7 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
                         else
                         {
                             board[i][j] = 0;
+                            addToList(computerBoardHead, board);
                         }
                     }
                 }
@@ -205,4 +187,73 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
         }
     }
     return true;
+}
+
+void Sudoku::addToList(BoardState *&head, int (&board)[SIZE][SIZE])
+{
+    BoardState *newState = new BoardState();
+    copyBoard(newState->board, board);
+    newState->next = NULL;
+    if (head == NULL)
+    {
+        head = newState;
+        return;
+    }
+    
+    BoardState *traverser = head;
+
+    while (traverser->next != NULL)
+    {
+        traverser = traverser->next;
+    }
+    traverser->next = newState;
+}
+
+void Sudoku::copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE])
+{
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            board1[i][j] = board2[i][j];
+        }
+    }
+}
+
+void Sudoku::eraseBoard(int (&board)[SIZE][SIZE])
+{
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            board[i][j] = 0;
+        }
+    }
+}
+
+void Sudoku::eraseList(BoardState *&head)
+{
+    BoardState *traverser = head;
+    while (traverser != NULL)
+    {
+        BoardState *tmp = traverser;
+        traverser = traverser->next;
+        delete tmp;
+    }
+    head = NULL;
+}
+
+void Sudoku::printList(BoardState *head)
+{
+    BoardState *traverser = head;
+    int count = 0;
+    while (traverser != NULL)
+    {
+        cout << "--------------------" << endl;
+        cout << "Board count: " << count << endl;
+        cout << "--------------------" << endl;
+        printBoard(traverser->board);
+        traverser = traverser->next;
+        count++;
+    }
 }
