@@ -14,7 +14,10 @@ int main()
 {
     bool generated = false;
     while (choice != "exit"){
-        sudoku.welcome();
+        if (choice == "")
+        {
+            sudoku.welcome();
+        }
         if (choice == "2"){
             if (generated == false){
                 sudoku.generateBoard(player1Board);
@@ -23,5 +26,5 @@ int main()
             sudoku.gameHandler(player1Board);
         }
     }
-    cout << CURSORCHAR << endl;
+    cout << "\033[1;31m"<< CURSORCHAR <<"\033[0m" << endl;
 }

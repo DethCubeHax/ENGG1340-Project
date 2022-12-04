@@ -72,23 +72,41 @@ void Sudoku::welcome(){
     }
 
 void Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
+    printBoard(board);
+    cout << "" << endl;
     string control;
     cin >> control;
     toLowerCase(control);
     if (control == "w" || control == "a" || control == "s" || control == "d"){
         cursorInputHandler(control);
-        gameHandler(board);
+        return;
     }
-    else if (control != "1" || control != "2" || control != "3" || control != "4" || control != "5" || control != "6" || control != "7" || control != "8" || control != "9"){
+    if (stoi(control) == 0)
+    {
+        if(playerBoardHead->board[cursorX][cursorY] != 0)
+        {
+            cout << "You cannot erase a pre-generated square" << endl;
+            return;
+        }
+        board[cursorY][cursorX] = 0;
+        addToList(playerBoardHead, board);
+        return;
+    }
+
+    else if(stoi(control) > 10 || stoi(control) < 0){
         cout << "The command you entered is invalid." << endl;
-        gameHandler(board);
+        return;
     }
-    if(! numberIsPossible(stoi(control), cursorX, cursorY, board)){
+    if(! numberIsPossible(stoi(control), cursorY, cursorX, board)){
         cout << "The number you entered is invalid." << endl;
-        gameHandler(board);
+        return;
     }
-    board[cursorX][cursorY] = stoi(control);
+    else{
+        board[cursorY][cursorX] = stoi(control);
+        addToList(playerBoardHead, board);
+    }
 }
+
 
 void Sudoku::toLowerCase(string &str){
     for (int i = 0; i < str.length(); i++){
@@ -97,16 +115,16 @@ void Sudoku::toLowerCase(string &str){
 }
    
 void Sudoku::cursorInputHandler(string control){
-    if (control == "a" || control == "A" && cursorX != 0){
+    if (control == "a" && cursorX != 0){
         cursorX--;
     }
-    if (control == "d" || control == "D" && cursorX != 8){
+    if (control == "d" && cursorX != 8){
         cursorX++;
     }
-    if (control == "w" || control == "W" && cursorY != 0){
+    if (control == "w" && cursorY != 0){
         cursorY--;
     }
-    if (control == "s" || control == "S" && cursorY != 8){
+    if (control == "s" && cursorY != 8){
         cursorY++;
     }
 }
@@ -151,6 +169,7 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
         eraseBoard(board);
         generateBoard(board);
     }
+    addToList(playerBoardHead, board);
 }
 
 void Sudoku::printBoard(int (&board)[SIZE][SIZE])
@@ -159,12 +178,51 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
     {
         if ( i % 3 == 0 && i != 0 )
         {
+            cout << "\u001b[36m";
             cout << "------x-------x------" << endl;
         }
         for ( int j = 0 ; j < SIZE ; j++ )
         {
-            if (j == 3 || j == 6) cout << "| ";
-            cout<<board[i][j]<<' ';
+            if (playerBoardHead->board[i][j] != 0)
+            {
+                cout << "\033[1;31m";
+            }
+                if (j == 3 || j == 6)
+                {
+                    cout << "\u001b[36m";
+                    cout << "| ";
+                    if (playerBoardHead->board[i][j] != 0)
+                    {
+                        cout << "\033[1;31m";
+                    }
+                    else
+                    {
+                        cout << "\033[0m";
+                    }
+                }
+                if (cursorX == j && cursorY == i)
+                {
+                    if (playerBoardHead->board[i][j] != 0)
+                    {
+                        cout << "\033[1;31m";
+                    }
+                    else
+                    {
+                        cout << "\u001b[32m";
+                    }
+                    cout << CURSORCHAR << ' ';
+                    cout << "\033[0m";
+                    continue;
+                }
+                if (playerBoardHead->board[i][j] == 0)
+                {
+                    cout << "\033[0m";
+                }
+                cout<<board[i][j]<<' ';
+            if (playerBoardHead->board[i][j] != 0)
+            {
+                cout << "\033[0m";
+            }
         }
         cout<<endl;
     }
