@@ -6,6 +6,7 @@ class Sudoku
 {
     public:
         void welcome();
+        void gameHandler(int (&board)[SIZE][SIZE]);
         void showInstruction();
         bool numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]);
         void printBoard(int (&board)[SIZE][SIZE]);
@@ -21,6 +22,8 @@ class Sudoku
         void copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE]);
         void eraseBoard(int (&board)[SIZE][SIZE]);
         void eraseList(BoardState *&head);
+        void cursorInputHandler(string control);
+        void toLowerCase(string &str);
         
 };
 

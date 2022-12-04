@@ -5,6 +5,7 @@
 #include <random>
 #include <chrono>
 #include <string>
+#include <cctype>
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
@@ -51,10 +52,10 @@ void Sudoku::welcome(){
             cin.ignore();
             valid_input = true;
             if (choice == "1"){
-
+                valid_input = true;
             }
             else if (choice == "2"){
-
+                valid_input = true;
             }
             else if (choice == "3"){
                 showInstruction();
@@ -70,8 +71,45 @@ void Sudoku::welcome(){
             }
     }
 
+void Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
+    string control;
+    cin >> control;
+    toLowerCase(control);
+    if (control == "w" || control == "a" || control == "s" || control == "d"){
+        cursorInputHandler(control);
+        gameHandler(board);
+    }
+    else if (control != "1" || control != "2" || control != "3" || control != "4" || control != "5" || control != "6" || control != "7" || control != "8" || control != "9"){
+        cout << "The command you entered is invalid." << endl;
+        gameHandler(board);
+    }
+    if(! numberIsPossible(stoi(control), cursorX, cursorY, board)){
+        cout << "The number you entered is invalid." << endl;
+        gameHandler(board);
+    }
+    board[cursorX][cursorY] = stoi(control);
+}
 
-
+void Sudoku::toLowerCase(string &str){
+    for (int i = 0; i < str.length(); i++){
+        str[i] = tolower(str[i]);
+    }
+}
+   
+void Sudoku::cursorInputHandler(string control){
+    if (control == "a" || control == "A" && cursorX != 0){
+        cursorX--;
+    }
+    if (control == "d" || control == "D" && cursorX != 8){
+        cursorX++;
+    }
+    if (control == "w" || control == "W" && cursorY != 0){
+        cursorY--;
+    }
+    if (control == "s" || control == "S" && cursorY != 8){
+        cursorY++;
+    }
+}
 
 void Sudoku::showInstruction(){
     
@@ -79,6 +117,7 @@ void Sudoku::showInstruction(){
     cout<<"This game is about......"<<endl;
     cout<<"========================================="<<endl;
     cout<<"Press Enter to continue";
+    cout<<"========================================="<<endl;
     // cin.ignore();
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
     
@@ -166,8 +205,6 @@ void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
         }
         fout.close();
     }
-    
-
 }
 
 bool Sudoku::checkRow(int number, int y, int (&board)[SIZE][SIZE])

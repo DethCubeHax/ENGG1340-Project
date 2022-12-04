@@ -12,7 +12,16 @@ BoardState *computerBoardHead = NULL;
 
 int main()
 {
-    sudoku.welcome();
-
+    bool generated = false;
+    while (choice != "exit"){
+        sudoku.welcome();
+        if (choice == "2"){
+            if (generated == false){
+                sudoku.generateBoard(player1Board);
+                generated = true;
+            }
+            sudoku.gameHandler(player1Board);
+        }
+    }
+    cout << CURSORCHAR << endl;
 }
-
