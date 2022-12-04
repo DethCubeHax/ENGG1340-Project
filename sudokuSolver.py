@@ -1,53 +1,36 @@
-M = 9
-def puzzle(a):
-    for i in range(M):
-        for j in range(M):
-            print(a[i][j],end = " ")
-        print()
-
-def solve(grid, row, col, num):
-    for x in range(9):
-        if grid[row][x] == num:
+def possible(y, x, n):
+    for i in range(0,9):
+        if sudokugrid[y][i] == n:
             return False
-             
-    for x in range(9):
-        if grid[x][col] == num:
+        if sudokugrid[i][x] == n:
             return False
- 
- 
-    startRow = row - row % 3
-    startCol = col - col % 3
-    for i in range(3):
-        for j in range(3):
-            if grid[i + startRow][j + startCol] == num:
+    x0 = (x//3)*3
+    y0 = (y//3)*3
+    for i in range(0,3):
+        for j in range(0,3):
+            if sudokugrid[y0+i][x0+j] == n:
                 return False
     return True
- 
-def Suduko(grid, row, col):
- 
-    if (row == M - 1 and col == M):
-        return True
-    if col == M:
-        row += 1
-        col = 0
-    if grid[row][col] > 0:
-        return Suduko(grid, row, col + 1)
-    for num in range(1, M + 1, 1): 
-     
-        if solve(grid, row, col, num):
-         
-            grid[row][col] = num
-            if Suduko(grid, row, col + 1):
-                return True
-        grid[row][col] = 0
-    return False
- 
+
+def solve():
+    for y in range(9):
+        for x in range(9):
+            if sudokugrid[y][x] == 0:
+                for n in range(1,10):
+                    if possible(y, x, n):
+                        sudokugrid[y][x] = n
+                        solve()
+                        sudokugrid[y][x] = 0
+                return
+    printBoard()
+    input("More?")
+
+def printBoard():
+    for i in range(9):
+        print(sudokugrid[i])
+
+sudokugrid = []
 file = open("test.txt", "r")
-grid = []
 for line in file:
-    grid.append([int(x) for x in line.split()])
- 
-if (Suduko(grid, 0, 0)):
-    puzzle(grid)
-else:
-    print("Solution does not exist:(")
+    sudokugrid.append([int(x) for x in line.split()])
+solve()

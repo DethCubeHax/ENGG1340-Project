@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <random>
+#include <chrono>
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
@@ -14,6 +15,22 @@ struct BoardState
 };
 
 using namespace std;
+using namespace std::chrono;
+
+random_device square; // obtain a random number from hardware
+random_device number; // obtain a random number from hardware
+mt19937 genSquare(square()); // seed the generator
+mt19937 genNumber(number()); // seed the generator
+uniform_int_distribution<> distrSquare(0, SIZE-1); // define the range
+uniform_int_distribution<> distrNumber(1, SIZE); // define the range
+
+
+uint64_t timeSinceBoot()
+{
+    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
+
+uint64_t runTime = timeSinceBoot();
 
 bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
@@ -23,19 +40,12 @@ bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]
 
 void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
 {
-    random_device square; // obtain a random number from hardware
-    random_device number; // obtain a random number from hardware
-    mt19937 genSquare(square()); // seed the generator
-    mt19937 genNumber(number()); // seed the generator
-    uniform_int_distribution<> distrSquare(0, SIZE-1); // define the range
-    uniform_int_distribution<> distrNumber(1, SIZE); // define the range
-
-    for (int i = 0; i<17; i++)
+    for (int i = 0; i<18; i++)
     {
         int x = distrSquare(genSquare);
         int y = distrSquare(genSquare);
         int num = distrNumber(genNumber);
-        if (numberIsPossible(num, x, y, board))
+        if (numberIsPossible(num, x, y, board) && board[x][y] == 0)
         {
             board[x][y] = num;
         }
@@ -43,6 +53,33 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
         {
             i--;
         }
+    }
+
+    int tmpBoard[SIZE][SIZE] = {0};
+    for (int i = 0; i<SIZE; i++)
+    {
+        for (int j = 0; j<SIZE; j++)
+        {
+            tmpBoard[i][j] = board[i][j];
+        }
+    }
+    runTime = timeSinceBoot();
+    if (solveBoard(tmpBoard))
+    {
+        cout << "Board generated successfully" << endl;
+        printBoard(tmpBoard);
+        cout << "--------------------" << endl;
+    }
+    else
+    {
+        for (int i = 0; i<SIZE; i++)
+        {
+            for (int j = 0; j<SIZE; j++)
+            {
+                board[i][j] = 0;
+            }
+        }
+        generateBoard(board);
     }
 }
 
@@ -82,6 +119,7 @@ void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
             }
             yCount++;
         }
+        fin.close();
     }
 
     if (args == 'w')
@@ -95,7 +133,9 @@ void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
             }
             fout<<endl;
         }
+        fout.close();
     }
+    
 
 }
 
@@ -124,7 +164,7 @@ bool Sudoku::checkBlock(int number, int x, int y, int (&board)[SIZE][SIZE])
     int yBlock = y/3;
     for ( int i = 0 ; i < 3 ; i++){
         for ( int j = 0 ; j < 3 ; j++){
-            if ( board[yBlock*3+i][xBlock*3+j] == number ){
+            if ( board[xBlock*3+i][yBlock*3+j] == number ){
                 notIn = false;
                 break;
             }
@@ -133,62 +173,36 @@ bool Sudoku::checkBlock(int number, int x, int y, int (&board)[SIZE][SIZE])
     return notIn;
 }
 
-bool Sudoku::solveBoard(int (&board)[SIZE][SIZE], int x, int y)
+bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
 {
-    printBoard(board);
-    cout << "-----------------" << endl;
-    cout << "Iteration: " << x << ", " << y << endl;
-    BoardState *head = NULL;
-    if (board[y][x] == 0)
+    if (timeSinceBoot() - runTime > 100)
     {
-        for (int i = 1; i < 10; i++)
-        {
-            if (numberIsPossible(i, x, y, board))
-            {
-                board[y][x] = i;
-                if (x == 8 && y == 8)
-                {
-                    return true;
-                }
-                else if (x == 8)
-                {
-                    if (solveBoard(board, 0, y + 1))
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    if (solveBoard(board, x + 1, y))
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        board[y][x] = 0;
         return false;
     }
-    else
+    for (int i = 0; i < SIZE; i++)
     {
-        if (x == 8 && y == 8)
+        for (int j = 0; j < SIZE; j++)
         {
-            return true;
-        }
-        else if (x == 8)
-        {
-            if (solveBoard(board, 0, y + 1))
+            if (board[i][j] == 0)
             {
-                return true;
-            }
-        }
-        else
-        {
-            if (solveBoard(board, x + 1, y))
-            {
-                return true;
+                for (int k = 1; k <= SIZE; k++)
+                {
+                    if (numberIsPossible(k, i, j, board))
+                    {
+                        board[i][j] = k;
+                        if (solveBoard(board))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            board[i][j] = 0;
+                        }
+                    }
+                }
+                return false;
             }
         }
     }
-    return false;
+    return true;
 }
