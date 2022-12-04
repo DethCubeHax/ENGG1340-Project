@@ -21,27 +21,27 @@ bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]
     return false;
 }
 
-void Sudoku::generateBoard(int (&board)[SIZE][SIZE]){
-    for ( int n = 1 ; n < 10 ; n++ ){
-        for ( int i = 0 ; i < 9 ; i+=3 ){
-            //cout<<i<<endl;
-            for ( int j = 0 ; j < 9 ; j+=3 ){
-                bool found = false;
-                while ( !found ){
-                    random_device rd; // obtain a random number from hardware
-                    mt19937 gen(rd()); // seed the generator
-                    uniform_int_distribution<> distr( i , i+2 ); // define the range 
-                    int row = distr(gen);
-                    random_device rd; // obtain a random number from hardware
-                    mt19937 gen(rd()); // seed the generator
-                    uniform_int_distribution<> distr( i , i+2 ); // define the range 
-                    int column = distr(gen);
-                    if ( numberIsPossible( n, column, row, board ) && board[row][column]==0 ){
-                        board[row][column]=n;
-                        found = true;
-                    }
-                }
-            }
+void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
+{
+    random_device square; // obtain a random number from hardware
+    random_device number; // obtain a random number from hardware
+    mt19937 genSquare(square()); // seed the generator
+    mt19937 genNumber(number()); // seed the generator
+    uniform_int_distribution<> distrSquare(0, SIZE-1); // define the range
+    uniform_int_distribution<> distrNumber(1, SIZE); // define the range
+
+    for (int i = 0; i<17; i++)
+    {
+        int x = distrSquare(genSquare);
+        int y = distrSquare(genSquare);
+        int num = distrNumber(genNumber);
+        if (numberIsPossible(num, x, y, board))
+        {
+            board[x][y] = num;
+        }
+        else
+        {
+            i--;
         }
     }
 }
