@@ -207,6 +207,7 @@ void Sudoku::addToList(BoardState *&head, int (&board)[SIZE][SIZE])
         traverser = traverser->next;
     }
     traverser->next = newState;
+    newState->previous = traverser;
 }
 
 void Sudoku::copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE])
