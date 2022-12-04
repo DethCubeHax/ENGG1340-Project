@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits>
 #include <random>
 #include <chrono>
+#include <string>
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
@@ -32,6 +34,56 @@ bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]
     if (checkRow(number, x, board) && checkColumn(number, y, board) && checkBlock(number, x, y, board) ) return true;
     return false;
 }
+
+
+void Sudoku::welcome(){
+    
+    bool valid_input = false;
+    cout << "Hello! Welcome to sudoku!" << endl;
+  
+    
+    while (!valid_input){
+        cout << "Please choose an option:" << endl;
+        cout << "1. Load game" << endl;
+        cout << "2. New game" << endl;
+        cout << "3. Instructions" << endl;
+            cin >> choice;
+            cin.ignore();
+            valid_input = true;
+            if (choice == "1"){
+
+            }
+            else if (choice == "2"){
+
+            }
+            else if (choice == "3"){
+                showInstruction();
+                valid_input = true;
+            }
+            else{
+                cout<<"========================================="<<endl;
+                cout << "Invalid input. Please enter: [ 1 2 3 ]." <<endl;
+                cout<<"========================================="<<endl;
+                valid_input = false;
+            }
+            
+            }
+    }
+
+
+
+
+void Sudoku::showInstruction(){
+    
+    cout<<"============ Instruction ================"<<endl;
+    cout<<"This game is about......"<<endl;
+    cout<<"========================================="<<endl;
+    cout<<"Press Enter to continue";
+    // cin.ignore();
+    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+    
+}
+
 
 void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
 {

@@ -12,8 +12,7 @@ BoardState *computerBoardHead = NULL;
 
 int main()
 {
-    sudoku.generateBoard(player1Board);
-    sudoku.printBoard(player1Board);
-    sudoku.readOrSaveBoard(player1Board, 'w');
-    sudoku.printList(computerBoardHead);
+    sudoku.welcome();
+
 }
+
