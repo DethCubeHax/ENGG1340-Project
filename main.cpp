@@ -9,8 +9,11 @@ int player2Board[SIZE][SIZE] = {0};
 
 int main()
 {
-    sudoku.readBoard(player1Board);
-    sudoku.generateBoard(player1Board);
+
+    sudoku.readOrSaveBoard(player1Board, 'r');
+    bool possible = sudoku.numberIsPossible(5, 2, 5, player1Board);
+    if (possible) player1Board[2][5] = 5;
+    cout<<possible<<endl;
     //sudoku.printBoard(player1Board);
     //cout << "-----------------" << endl;
     //sudoku.solveBoard(player1Board, 0, 0);

@@ -7,7 +7,7 @@ class Sudoku
     public:
         bool numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]);
         void printBoard(int (&board)[SIZE][SIZE]);
-        void readBoard(int (&board)[SIZE][SIZE]);
+        void readOrSaveBoard(int (&board)[SIZE][SIZE], char args);
         void generateBoard (int (&board)[SIZE][SIZE]);
         bool solveBoard(int (&board)[SIZE][SIZE], int x, int y);
     private:

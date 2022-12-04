@@ -1,65 +1,53 @@
-# Get the index from the row, column, and digit
-def indexFromChoice(row, column, digit):
-    return 81 * row + 9 * column * digit
+M = 9
+def puzzle(a):
+    for i in range(M):
+        for j in range(M):
+            print(a[i][j],end = " ")
+        print()
 
-
-# Get the row, column, and digit from the index
-def choiceFromIndex(i):
-    return i // 81, (i // 9) % 9, i % 9
-
-
-def cellConstraint(row, column):
-    return [indexFromChoice(row, column, digit) for digit in range(9)]
-
-
-def rowConstraint(row, digit):
-    return [indexFromChoice(row, column, digit) for column in range(9)]
-
-
-def columnConstraint(column, digit):
-    return [indexFromChoice(row, column, digit) for row in range(9)]
-
-
-def generateConstraints():
-    constraints = []
-    for row in range(9):
-        for column in range(9):
-            constraints.append(cellConstraint(row, column))
-    for row in range(9):
-        for digit in range(9):
-            constraints.append(rowConstraint(row, digit))
-    for column in range(9):
-        for digit in range(9):
-            constraints.append(columnConstraint(column, digit))
-    return constraints
-
-
-def solve():
-    permutations = 9 * 9 * 9
-    constraints = generateConstraints()
-    relation = [len(constraints) * [0] for i in range(permutations)]
-    for i, constraint in enumerate(constraints):
-        for c in constraint:
-            relation[c][i] = 1
-
-
-if __name__ == '__main__':
-    solve()
-
-
-def sudokuGenerator():
-    # Create a list of 81 numbers from 1 to 9
-    numbers = list(range(1, 10))
-    # Create a list of 81 empty spaces
-    spaces = list(range(81))
-    # Shuffle the numbers
-    random.shuffle(numbers)
-    # Shuffle the spaces
-    random.shuffle(spaces)
-    # Create a list of 81 empty spaces
-    sudoku = list(range(81))
-    # Fill the spaces with the numbers
-    for i in range(81):
-        sudoku[spaces[i]] = numbers[i]
-    # Return the sudoku
-    return sudoku
+def solve(grid, row, col, num):
+    for x in range(9):
+        if grid[row][x] == num:
+            return False
+             
+    for x in range(9):
+        if grid[x][col] == num:
+            return False
+ 
+ 
+    startRow = row - row % 3
+    startCol = col - col % 3
+    for i in range(3):
+        for j in range(3):
+            if grid[i + startRow][j + startCol] == num:
+                return False
+    return True
+ 
+def Suduko(grid, row, col):
+ 
+    if (row == M - 1 and col == M):
+        return True
+    if col == M:
+        row += 1
+        col = 0
+    if grid[row][col] > 0:
+        return Suduko(grid, row, col + 1)
+    for num in range(1, M + 1, 1): 
+     
+        if solve(grid, row, col, num):
+         
+            grid[row][col] = num
+            if Suduko(grid, row, col + 1):
+                return True
+        grid[row][col] = 0
+    return False
+ 
+file = open("test.txt", "r")
+grid = []
+for line in file:
+    grid.append([int(x) for x in line.split()])
+ 
+if (Suduko(grid, 0, 0)):
+    puzzle(grid)
+else:
+    print("Solution does not exist:(")

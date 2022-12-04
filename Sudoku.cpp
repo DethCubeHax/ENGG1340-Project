@@ -50,30 +50,51 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
 {
     for ( int i = 0 ; i < SIZE ; i++ )
     {
+        if ( i % 3 == 0 && i != 0 )
+        {
+            cout << "------x-------x------" << endl;
+        }
         for ( int j = 0 ; j < SIZE ; j++ )
         {
+            if (j == 3 || j == 6) cout << "| ";
             cout<<board[i][j]<<' ';
         }
         cout<<endl;
     }
 }
 
-void Sudoku::readBoard(int (&board)[SIZE][SIZE])
+void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
 {   
-    ifstream fin("test.txt");                 // Open the file
-    int yCount = 0;
-    string line;
-    while (getline(fin, line))
+    if (args == 'r')
     {
-        istringstream iss(line);
-        char w;
-        int xCount = 0;
-        while (iss >> w)
+        ifstream fin("test.txt");                 // Open the file
+        int yCount = 0;
+        string line;
+        while (getline(fin, line))
         {
-            board[yCount][xCount] = int(w) - 48;
-            xCount++;
+            istringstream iss(line);
+            char w;
+            int xCount = 0;
+            while (iss >> w)
+            {
+                board[yCount][xCount] = int(w) - 48;
+                xCount++;
+            }
+            yCount++;
         }
-        yCount++;
+    }
+
+    if (args == 'w')
+    {
+        ofstream fout("test.txt");
+        for ( int i = 0 ; i < SIZE ; i++ )
+        {
+            for ( int j = 0 ; j < SIZE ; j++ )
+            {
+                fout<<board[i][j]<<' ';
+            }
+            fout<<endl;
+        }
     }
 
 }
