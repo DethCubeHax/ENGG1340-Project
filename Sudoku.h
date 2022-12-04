@@ -6,7 +6,7 @@ class Sudoku
 {
     public:
         void welcome();
-        void gameHandler(int (&board)[SIZE][SIZE]);
+        int gameHandler(int (&board)[SIZE][SIZE]);
         void showInstruction();
         bool numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]);
         void printBoard(int (&board)[SIZE][SIZE]);

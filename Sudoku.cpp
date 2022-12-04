@@ -68,10 +68,10 @@ void Sudoku::welcome(){
                 valid_input = false;
             }
             
-            }
+        }
     }
 
-void Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
+int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     printBoard(board);
     cout << "" << endl;
     string control;
@@ -79,31 +79,30 @@ void Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     toLowerCase(control);
     if (control == "w" || control == "a" || control == "s" || control == "d"){
         cursorInputHandler(control);
-        return;
+        return 0;
     }
     if (stoi(control) == 0)
     {
-        if(playerBoardHead->board[cursorX][cursorY] != 0)
+        if(playerBoardHead->board[cursorY][cursorX] != 0)
         {
-            cout << "You cannot erase a pre-generated square" << endl;
-            return;
+            cout << "INITIATING SHIELDSSS" << endl;
+            return 1;
         }
         board[cursorY][cursorX] = 0;
         addToList(playerBoardHead, board);
-        return;
+        return 0;
     }
 
     else if(stoi(control) > 10 || stoi(control) < 0){
-        cout << "The command you entered is invalid." << endl;
-        return;
+        return 2;
     }
     if(! numberIsPossible(stoi(control), cursorY, cursorX, board)){
-        cout << "The number you entered is invalid." << endl;
-        return;
+        return 3;
     }
     else{
         board[cursorY][cursorX] = stoi(control);
         addToList(playerBoardHead, board);
+        return 0;
     }
 }
 
@@ -209,6 +208,12 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
                     else
                     {
                         cout << "\u001b[32m";
+                        if (board[i][j] != 0)
+                        {
+                            cout << "\u001b[32m" << board[i][j] << ' ';
+                            cout << "\033[0m";
+                            continue;
+                        }
                     }
                     cout << CURSORCHAR << ' ';
                     cout << "\033[0m";
