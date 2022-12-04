@@ -10,8 +10,8 @@ int player2Board[SIZE][SIZE] = {0};
 int main()
 {
     sudoku.readBoard(player1Board);
-    sudoku.printBoard(player1Board);
-    cout << "-----------------" << endl;
-    sudoku.solveBoard(player1Board, 0, 0);
+    //sudoku.printBoard(player1Board);
+    //cout << "-----------------" << endl;
+    //sudoku.solveBoard(player1Board, 0, 0);
     sudoku.printBoard(player1Board);
 }

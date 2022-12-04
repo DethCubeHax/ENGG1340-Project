@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <random>
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
@@ -21,23 +22,27 @@ bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]
 }
 
 void Sudoku::generateBoard(int (&board)[SIZE][SIZE]){
-    for ( int i = 0 ; i < 9 ; i++){
-        //cout<<i<<endl;
-        for ( int j = 0 ; j < 9 ; j++ ){
-            //cout<<j;
-            for ( int k = 1; k < 10 ; k++){
-                if ( numberIsPossible( k, j, i, board ) ){
-                    board[i][j]=k;
-                    break;
+    for ( int n = 1 ; n < 10 ; n++ ){
+        for ( int i = 0 ; i < 9 ; i+=3 ){
+            //cout<<i<<endl;
+            for ( int j = 0 ; j < 9 ; j+=3 ){
+                bool found = false;
+                while ( !found ){
+                    random_device rd; // obtain a random number from hardware
+                    mt19937 gen(rd()); // seed the generator
+                    uniform_int_distribution<> distr( i , i+2 ); // define the range 
+                    int row = distr(gen);
+                    random_device rd; // obtain a random number from hardware
+                    mt19937 gen(rd()); // seed the generator
+                    uniform_int_distribution<> distr( i , i+2 ); // define the range 
+                    int column = distr(gen);
+                    if ( numberIsPossible( n, column, row, board ) && board[row][column]==0 ){
+                        board[row][column]=n;
+                        found = true;
+                    }
                 }
-                //else if ( k ==1 and j == 6 and i == 1 and checkBlock( k, j, i, board )){
-                    //cout<<j<<i<<endl;
-                    //break;
-            //}
             }
-            
         }
-        //cout<<endl;
     }
 }
 
@@ -55,7 +60,7 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
 
 void Sudoku::readBoard(int (&board)[SIZE][SIZE])
 {   
-    ifstream fin("game.txt");                 // Open the file
+    ifstream fin("test.txt");                 // Open the file
     int yCount = 0;
     string line;
     while (getline(fin, line))
