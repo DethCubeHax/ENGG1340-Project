@@ -16,9 +16,27 @@ int main()
     char *cont;
     bool generated = false;
     while (choice != "exit"){
+        system("clear");
         if (choice == "")
         {
             sudoku.welcome();
+        }
+        switch (err)
+        {
+        case 1:
+            cout << "You cannot erase a pre-generated square." << endl;
+            break;
+        case 2:
+            cout << "The command you entered is invalid." << endl;
+            break;
+        case 3:
+            cout << "The number you entered is invalid." << endl;
+            break;
+        case 4:
+            cout << "You cannot overwrite a pre-generated square." << endl;
+            break;
+        default:
+            break;
         }
         if (choice == "2"){
             if (generated == false){
@@ -27,24 +45,5 @@ int main()
             }
             err=sudoku.gameHandler(player1Board);
         }
-
-        system("clear");
-
-        switch (err)
-        {
-        case 1:
-            cout << "You cannot erase a pre-generated square" << endl;
-            break;
-        case 2:
-            cout << "The command you entered is invalid" << endl;
-            break;
-        case 3:
-            cout << "The number you entered is invalid." << endl;
-            break;
-        default:
-            break;
-        }
-        
     }
-    cout << "\033[1;31m"<< CURSORCHAR <<"\033[0m" << endl;
 }

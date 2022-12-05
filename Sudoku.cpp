@@ -77,6 +77,10 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     string control;
     cin >> control;
     toLowerCase(control);
+    if (control.length() > 1)
+    {
+        return 2;
+    }
     if (control == "w" || control == "a" || control == "s" || control == "d"){
         cursorInputHandler(control);
         return 0;
@@ -85,7 +89,6 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     {
         if(playerBoardHead->board[cursorY][cursorX] != 0)
         {
-            cout << "INITIATING SHIELDSSS" << endl;
             return 1;
         }
         board[cursorY][cursorX] = 0;
@@ -100,6 +103,10 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
         return 3;
     }
     else{
+        if (playerBoardHead->board[cursorY][cursorX] != 0)
+        {
+            return 4;
+        }
         board[cursorY][cursorX] = stoi(control);
         addToList(playerBoardHead, board);
         return 0;
