@@ -125,13 +125,16 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
 }
 
 void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
-        cout << "Congratulations! You have solved the puzzle!" << endl;
-        cout << "------------------------------------------" << endl;
+        cout << "\x1B[38;5;38m=========================================" << endl;
+        cout << "Congratulations!" << endl;
+        cout << "\x1B[38;5;74mYou have solved the puzzle (^･ω･^)" << endl;
         printBoard(board);
-        cout << "------------------------------------------" << endl;
-        cout << "Your time is: " << timeSinceBoot() - runTime << " milliseconds." << endl;
+        cout << "\x1B[38;5;110m=========================================\n" << endl;
+        cout << "\x1B[38;5;146mYour time is: " << timeSinceBoot() - runTime << " milliseconds." << endl;
+        cout << "\x1B[38;5;182m=========================================" << endl;
         cout << "Your steps are: " << player1Steps << "compared to computer's: " << computerSteps << "." << endl;
-        cout << "Would you like to review your steps? (y/n)" << endl;
+        cout << "\x1B[38;5;218mWould you like to review the steps? (y/n)" << endl;
+        cout << "=========================================" << endl;
         string control;
         cin >> control;
         while(control.length() > 1 || (control != "y" && control != "n")){
@@ -142,9 +145,8 @@ void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
             printList(playerBoardHead, computerBoardHead);
         }
         else{
-            cout << "Thank you for playing!" << endl;
+            cout << "Thank you for playing! (^･ω･^)\x1B[38;5;255m" << endl;
         }
-        cout << "You have quit the game." << endl;
         choice = "exit";
 }
 
