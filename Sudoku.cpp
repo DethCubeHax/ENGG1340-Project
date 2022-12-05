@@ -72,6 +72,11 @@ void Sudoku::welcome(){
 }
 
 int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
+    if (isSolved(board)) 
+    {
+        choice = "3";
+        return 0;
+    }
     printBoard(board);
     cout << "" << endl;
     string control;
@@ -113,6 +118,28 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     }
 }
 
+void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
+    if (choice == "3"){
+        cout << "Congratulations! You have solved the puzzle!" << endl;
+        cout << "Your time is: " << timeSinceBoot() - runTime << " milliseconds." << endl;
+        cout << "Would you like to review your steps? (y/n)" << endl;
+        string control;
+        cin >> control;
+        while(control.length() > 1 || (control != "y" && control != "n")){
+            cout << "Invalid input. Please enter: [ y n ]." << endl;
+            cin >> control;
+        }
+        if (control == "y"){
+            printList(playerBoardHead, computerBoardHead);
+        }
+        else{
+            cout << "Thank you for playing!" << endl;
+        }
+    }
+    else{
+        cout << "You have quit the game." << endl;
+    }
+}
 
 void Sudoku::toLowerCase(string &str){
     for (int i = 0; i < str.length(); i++){
@@ -403,17 +430,42 @@ void Sudoku::eraseList(BoardState *&head)
     head = NULL;
 }
 
-void Sudoku::printList(BoardState *head)
+void Sudoku::printList(BoardState *playerHead, BoardState *computerHead)
 {
-    BoardState *traverser = head;
+    BoardState *playerTraverser = playerHead;
+    BoardState *computerTraverser = computerHead;;
     int count = 0;
-    while (traverser != NULL)
+    while (playerTraverser != NULL || computerTraverser != NULL)
     {
         cout << "--------------------" << endl;
-        cout << "Board count: " << count << endl;
+        cout << "Your move number " << count << " :" << endl;
         cout << "--------------------" << endl;
-        printBoard(traverser->board);
-        traverser = traverser->next;
+        printBoard(playerTraverser->board);
+        playerTraverser = playerTraverser->next;
+        cout << "--------------------" << endl;
+        cout << "Computer move number " << count << " :" << endl;
+        cout << "--------------------" << endl;
+        printBoard(computerTraverser->board);
+        computerTraverser = computerTraverser->next;
+        cout << "--------------------" << endl;
+        cout << "Press enter to continue" << endl;
+        cout << "--------------------" << endl;
+        cin.ignore();
         count++;
     }
+}
+
+bool Sudoku::isSolved(int (&board)[SIZE][SIZE])
+{
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            if (board[i][j] == 0)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
