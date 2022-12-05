@@ -22,45 +22,50 @@ int main()
             sudoku.welcome();
             if (choice == "exit")
             {
+                system("clear");
                 break;
             }
         }
         switch (err)
         {
         case 1:
-            cout << "You cannot erase a pre-generated square." << endl;
+            cout << "\nYou cannot erase a pre-generated square.\n" << endl;
             break;
         case 2:
-            cout << "The command you entered is invalid." << endl;
+            cout << "\nThe command you entered is invalid.\n" << endl;
             break;
         case 3:
-            cout << "The number you entered is invalid." << endl;
+            cout << "\nThe number you entered is invalid.\n" << endl;
             break;
         case 4:
-            cout << "You cannot overwrite a pre-generated square." << endl;
+            cout << "\nYou cannot overwrite a pre-generated square.\n" << endl;
             break;
         case 5:
-            cout << "Game has been saved." << endl;
+            cout << "\nGame has been saved.\n" << endl;
             choice = "";
         default:
             break;
         }
+        sudoku.toLowerCase(choice);
         if (choice == "2"){
             if (generated == false){
+                system("clear");
                 sudoku.generateBoard(player1Board);
                 generated = true;
             }
             err=sudoku.gameHandler(player1Board);
         }
         if (choice == "3"){
-            
         }
         if (choice == "4"){
             sudoku.finalScreen(player1Board);
         }
         if (choice == "exit"){
+            
             break;
         }
     }
-    cout << "Game has exited." << endl;
+    cout << "\n\n\n\x1B[38;5;30m--\x1B[38;5;66m-。\x1B[38;5;102m--。\x1B[38;5;138m---";
+    cout << "\x1B[38;5;174mBye \x1B[38;5;210mbye \x1B[38;5;210m(^･ω\x1B[38;5;174m･^)";
+    cout << "\x1B[38;5;138m---\x1B[38;5;102m。--\x1B[38;5;66m。-\x1B[38;5;30m--\n\n\n" << endl;
 }
