@@ -41,7 +41,6 @@ void Sudoku::welcome(){
     
     bool valid_input = false;
     cout << "Hello! Welcome to sudoku!" << endl;
-  
     
     while (!valid_input){
         cout << "Please choose an option:" << endl;
@@ -74,7 +73,7 @@ void Sudoku::welcome(){
 int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     if (isSolved(board)) 
     {
-        choice = "3";
+        choice = "4";
         return 0;
     }
     printBoard(board);
@@ -119,7 +118,7 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
 }
 
 void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
-    if (choice == "3"){
+    if (choice == "4"){
         cout << "Congratulations! You have solved the puzzle!" << endl;
         cout << "------------------------------------------" << endl;
         printBoard(board);
@@ -141,6 +140,7 @@ void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
     }
     else{
         cout << "You have quit the game." << endl;
+        choice = "exit";
     }
 }
 
@@ -174,6 +174,7 @@ void Sudoku::showInstruction(){
     cout<<"========================================="<<endl;
     // cin.ignore();
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+    choice = "";
     
 }
 
