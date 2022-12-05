@@ -6,11 +6,13 @@
 #include <chrono>
 #include <string>
 #include <cctype>
+#include <ctime>
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
 using namespace std;
 using namespace std::chrono;
+using std::ostream;
 
 random_device square; // obtain a random number from hardware
 random_device number; // obtain a random number from hardware
@@ -48,30 +50,29 @@ void Sudoku::welcome(){
         cout << "2. New game" << endl;
         cout << "3. Instructions" << endl;
         cout << "Type [ exit ] to quit" << endl;
-            cin >> choice;
-            cin.ignore();
+        cin >> choice;
+        cin.ignore();
+        valid_input = true;
+        if (choice == "1"){
             valid_input = true;
-            if (choice == "1"){
-                valid_input = true;
-            }
-            else if (choice == "2"){
-                valid_input = true;
-            }
-            else if (choice == "3"){
-                showInstruction();
-                valid_input = true;
-            }
-            else if (choice =="exit"){
-                valid_input = true;
-            }
-            else{
-                cout<<"========================================="<<endl;
-                cout << "Invalid input. Please enter: [ 1 2 3 ]." <<endl;
-                cout<<"========================================="<<endl;
-                valid_input = false;
-            }           
+        }
+        else if (choice == "2"){
+            valid_input = true;
+        }
+        else if (choice == "3"){
+            showInstruction();
+            valid_input = true;
+        }
+        else if (choice =="exit"){
+            valid_input = true;
+        }
+        else{
+            cout<<"========================================="<<endl;
+            cout << "Invalid input. Please enter: [ 1 2 3 ]." <<endl;
+            cout<<"========================================="<<endl;
+            valid_input = false;
+        }           
     }
-    system("clear");
 }
 
 int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
@@ -317,7 +318,10 @@ void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
 
     if (args == 'w')
     {
-        ofstream fout("test.txt");
+        ofstream fout("originalBoard.txt");
+        time_t ttime = time(0);
+        char* dt = ctime(&ttime);
+        fout<<dt;
         for ( int i = 0 ; i < SIZE ; i++ )
         {
             for ( int j = 0 ; j < SIZE ; j++ )
