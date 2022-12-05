@@ -35,6 +35,9 @@ int main()
         case 4:
             cout << "You cannot overwrite a pre-generated square." << endl;
             break;
+        case 5:
+            cout << "Game has been saved." << endl;
+            choice = "";
         default:
             break;
         }
@@ -48,9 +51,12 @@ int main()
         if (choice == "3"){
             
         }
-
         if (choice == "4"){
             sudoku.finalScreen(player1Board);
         }
+        if (choice == "exit"){
+            break;
+        }
     }
+    cout << "Game has exited." << endl;
 }

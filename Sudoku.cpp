@@ -47,6 +47,7 @@ void Sudoku::welcome(){
         cout << "1. Load game" << endl;
         cout << "2. New game" << endl;
         cout << "3. Instructions" << endl;
+        cout << "Type [ exit ] to quit" << endl;
             cin >> choice;
             cin.ignore();
             valid_input = true;
@@ -58,6 +59,9 @@ void Sudoku::welcome(){
             }
             else if (choice == "3"){
                 showInstruction();
+                valid_input = true;
+            }
+            else if (choice =="exit"){
                 valid_input = true;
             }
             else{
@@ -81,6 +85,9 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     string control;
     cin >> control;
     toLowerCase(control);
+    if (control == "exit"){
+        return 5;
+    }
     if (control.length() > 1)
     {
         return 2;
