@@ -56,26 +56,15 @@ void Sudoku::welcome(){
         cout<<"\x1B[38;5;210m=========================================\x1B[38;5;255m"<<endl;
         cin >> choice;
         cin.ignore();
-        valid_input = true;
-        if (choice == "1"){
-            valid_input = true;
-        }
-        else if (choice == "2"){
-            valid_input = true;
-        }
-        else if (choice == "3"){
-            showInstruction();
-            valid_input = true;
-        }
-        else if (choice =="exit"){
+        if (choice == "1" || choice == "2" || choice == "3" || choice == "exit"){
             valid_input = true;
         }
         else{
+            valid_input = false;
             cout<<"========================================="<<endl;
             cout << "Invalid input. Please enter: [ 1 2 3 ]." <<endl;
             cout<<"========================================="<<endl;
-            valid_input = false;
-        }           
+        }
     }
 }
 
@@ -178,7 +167,7 @@ void Sudoku::cursorInputHandler(string control){
 }
 
 void Sudoku::showInstruction(){
-    
+    system("clear");
     cout << "\x1B[38;5;30m============= Instructions ===============" << endl;
     cout << "\x1B[38;5;66m\nWelcome to sudoku! The objective of this\n";
     cout << "game is to fill a 9 × 9 grid with digits\n";

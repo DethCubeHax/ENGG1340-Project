@@ -16,9 +16,10 @@ int main()
     char *cont;
     bool generated = false;
     while (choice != "exit"){
-        system("clear");
         if (choice == "")
         {
+            system("clear");
+            if (err != 0) err = 0;
             sudoku.welcome();
             if (choice == "exit")
             {
@@ -26,28 +27,30 @@ int main()
                 break;
             }
         }
+
         switch (err)
         {
-        case 1:
-            cout << "\nYou cannot erase a pre-generated square.\n" << endl;
-            break;
-        case 2:
-            cout << "\nThe command you entered is invalid.\n" << endl;
-            break;
-        case 3:
-            cout << "\nThe number you entered is invalid.\n" << endl;
-            break;
-        case 4:
-            cout << "\nYou cannot overwrite a pre-generated square.\n" << endl;
-            break;
-        case 5:
-            cout << "\nGame has been saved.\n" << endl;
-            choice = "";
-        default:
-            break;
+            case 1:
+                cout << "You cannot erase a pre-generated square." << endl;
+                break;
+            case 2:
+                cout << "The command you entered is invalid." << endl;
+                break;
+            case 3:
+                cout << "The number you entered is invalid." << endl;
+                break;
+            case 4:
+                cout << "You cannot overwrite a pre-generated square." << endl;
+                break;
+            case 5:
+                cout << "Game has been saved." << endl;
+                choice = "";
+            default:
+                break;
         }
         sudoku.toLowerCase(choice);
         if (choice == "2"){
+            system("clear");
             if (generated == false){
                 system("clear");
                 sudoku.generateBoard(player1Board);
@@ -56,8 +59,11 @@ int main()
             err=sudoku.gameHandler(player1Board);
         }
         if (choice == "3"){
+            system("clear");
+            sudoku.showInstruction();
         }
         if (choice == "4"){
+            system("clear");
             sudoku.finalScreen(player1Board);
         }
         if (choice == "exit"){
