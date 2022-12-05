@@ -102,9 +102,9 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
         }
         board[cursorY][cursorX] = 0;
         addToList(playerBoardHead, board);
+        readOrSaveBoard(board, 'w');
         return 0;
     }
-
     else if(stoi(control) > 10 || stoi(control) < 0){
         return 2;
     }
@@ -118,6 +118,7 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
         }
         board[cursorY][cursorX] = stoi(control);
         addToList(playerBoardHead, board);
+        readOrSaveBoard(board, 'w');
         player1Steps++;
         return 0;
     }
@@ -227,6 +228,8 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
         eraseBoard(board);
         generateBoard(board);
     }
+    remove("computerBoard.txt");
+    saveBoard(board, computerBoardHead, "computerBoard.txt");
     addToList(playerBoardHead, board);
 }
 
@@ -296,30 +299,17 @@ void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
 {   
     if (args == 'r')
     {
-        ifstream fin("test.txt");                 // Open the file
-        int yCount = 0;
-        string line;
-        while (getline(fin, line))
+        ifstream fin("steps.txt");                 // Open the file
+        if (!fin)                                 // If the file does not exist
         {
-            istringstream iss(line);
-            char w;
-            int xCount = 0;
-            while (iss >> w)
-            {
-                board[yCount][xCount] = int(w) - 48;
-                xCount++;
-            }
-            yCount++;
+            cout << "File does not exist." << endl;
         }
-        fin.close();
+
     }
 
     if (args == 'w')
     {
-        ofstream fout("originalBoard.txt");
-        time_t ttime = time(0);
-        char* dt = ctime(&ttime);
-        fout<<dt;
+        ofstream fout("playerBoard.txt", ios::app);
         for ( int i = 0 ; i < SIZE ; i++ )
         {
             for ( int j = 0 ; j < SIZE ; j++ )
@@ -524,12 +514,9 @@ void Sudoku::saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file)
         traverser = traverser->next;
     }
     fout.close();
-    fout.open("steps.txt");
-    fout << player1Steps << ' ' << computerSteps << ' ';
-    fout.close();
 }
 
-void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName) //tmpBoard
+void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName, int &steps) //tmpBoard
 {
     if (head!=NULL)
     {
@@ -545,19 +532,14 @@ void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileNa
             {
                 for (int j = 0; j < SIZE; j++)
                 {
-                    fin >> board[i][j];
+                    char tmp;
+                    fin >> tmp;
+                    board[i][j] = tmp - '0';
                 }
             }
             addToList(head, board);
+            steps++;
         }
     }
-    remove(fileName.c_str());
     fin.close();
-
-    ifstream fin2("steps.txt");
-    if(fin2.is_open())
-    {
-        fin2 >> player1Steps >> computerSteps;
-    }
-    fin2.close();
 }

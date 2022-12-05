@@ -4,8 +4,8 @@
 using namespace std;
 Sudoku sudoku;
 
-int player1Board[SIZE][SIZE];
-int tmpBoard[SIZE][SIZE];
+int player1Board[SIZE][SIZE] = {0};
+int tmpBoard[SIZE][SIZE] = {0};
 
 BoardState *playerBoardHead = NULL;
 BoardState *computerBoardHead = NULL;
@@ -15,8 +15,6 @@ int computerSteps = 0;
 
 int main()
 {
-
-    
     int err=0;
     char *cont;
     bool generated = false;
@@ -57,8 +55,8 @@ int main()
         if (choice == "1")
         {
             //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
-            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
-            sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt");
+            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt", computerSteps);
+            sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
             choice = "2";
         }
         sudoku.toLowerCase(choice);
@@ -88,10 +86,4 @@ int main()
     cout << "\n\n\n\x1B[38;5;30m--\x1B[38;5;66m-。\x1B[38;5;102m--。\x1B[38;5;138m---";
     cout << "\x1B[38;5;174mBye \x1B[38;5;210mbye \x1B[38;5;210m(^･ω\x1B[38;5;174m･^)";
     cout << "\x1B[38;5;138m---\x1B[38;5;102m。--\x1B[38;5;66m。-\x1B[38;5;30m--\n\n\n" << endl;
-    if (madeAMove)
-    {
-        sudoku.saveBoard(player1Board, playerBoardHead, "playerBoard.txt");
-        sudoku.saveBoard(tmpBoard, computerBoardHead, "computerBoard.txt");
-    }
-
 }
