@@ -5,12 +5,16 @@
 class Sudoku
 {
     public:
+        void welcome();
+        int gameHandler(int (&board)[SIZE][SIZE]);
+        void finalScreen(int (&board)[SIZE][SIZE]);
+        void showInstruction();
         bool numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]);
         void printBoard(int (&board)[SIZE][SIZE]);
         void readOrSaveBoard(int (&board)[SIZE][SIZE], char args);
         void generateBoard (int (&board)[SIZE][SIZE]);
         bool solveBoard(int (&board)[SIZE][SIZE]);
-        void printList(BoardState *head);
+        void printList(BoardState *playerHead, BoardState *computerHead);
     private:
         bool checkRow(int number, int y, int (&board)[SIZE][SIZE]);
         bool checkColumn(int number, int x, int (&board)[SIZE][SIZE]);
@@ -19,7 +23,9 @@ class Sudoku
         void copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE]);
         void eraseBoard(int (&board)[SIZE][SIZE]);
         void eraseList(BoardState *&head);
-        
+        void cursorInputHandler(string control);
+        void toLowerCase(string &str);
+        bool isSolved(int (&board)[SIZE][SIZE]);
 };
 
 #endif
