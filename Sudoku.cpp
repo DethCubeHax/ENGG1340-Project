@@ -342,6 +342,9 @@ void Sudoku::printBoard(int (&board)[SIZE][SIZE])
     }
 }
 
+// Function to save the user board to the disk
+// Inputs: the board
+// Outputs: the board saved to the disk
 void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
 {   
     if (args == 'r')
@@ -369,6 +372,8 @@ void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
     }
 }
 
+
+// Function to check if the number is possible at the row
 bool Sudoku::checkRow(int number, int y, int (&board)[SIZE][SIZE])
 {
     for ( int i = 0 ; i < SIZE ; i++ )
@@ -378,6 +383,7 @@ bool Sudoku::checkRow(int number, int y, int (&board)[SIZE][SIZE])
     return true;
 }
 
+// Function to check if the number is possible at the column
 bool Sudoku::checkColumn(int number, int x, int (&board)[SIZE][SIZE])
 {
     for ( int i = 0 ; i < SIZE ; i++ )
@@ -387,6 +393,7 @@ bool Sudoku::checkColumn(int number, int x, int (&board)[SIZE][SIZE])
     return true;
 }
 
+// Function to check if the number is possible at the square
 bool Sudoku::checkBlock(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
     bool notIn = true;
@@ -403,6 +410,9 @@ bool Sudoku::checkBlock(int number, int x, int y, int (&board)[SIZE][SIZE])
     return notIn;
 }
 
+// Function the computer to solve the board
+// Inputs: the board
+// Outputs: the board solved
 bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
 {
     if (timeSinceBoot() - runTime > 100)
@@ -440,6 +450,9 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
     return true;
 }
 
+// Function to add a board to the list
+// Inputs: the head of the list and the board
+// Outputs: the board added to the list
 void Sudoku::addToList(BoardState *&head, int (&board)[SIZE][SIZE])
 {
     BoardState *newState = new BoardState();
@@ -464,6 +477,9 @@ void Sudoku::addToList(BoardState *&head, int (&board)[SIZE][SIZE])
     
 }
 
+// Function to copy the board
+// Inputs: the board to be copied and the board to be copied to
+// Outputs: the board copied
 void Sudoku::copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE])
 {
     for (int i = 0; i < SIZE; i++)
@@ -475,6 +491,9 @@ void Sudoku::copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE])
     }
 }
 
+// Function to erase the board
+// Inputs: the board
+// Outputs: the board erased
 void Sudoku::eraseBoard(int (&board)[SIZE][SIZE])
 {
     for (int i = 0; i < SIZE; i++)
@@ -486,6 +505,9 @@ void Sudoku::eraseBoard(int (&board)[SIZE][SIZE])
     }
 }
 
+// Function to erase the list
+// Inputs: the head of the list
+// Outputs: the list erased
 void Sudoku::eraseList(BoardState *&head)
 {
     BoardState *traverser = head;
@@ -502,6 +524,10 @@ void Sudoku::eraseList(BoardState *&head)
     head = NULL;
 }
 
+
+// Function to print the user board list and the computer board list
+// Inputs: the head of the user board list and the head of the computer board list
+// Outputs: the user board list and the computer board list printed
 void Sudoku::printList(BoardState *playerHead, BoardState *computerHead)
 {
     BoardState *playerTraverser = playerHead;
@@ -531,6 +557,10 @@ void Sudoku::printList(BoardState *playerHead, BoardState *computerHead)
     }
 }
 
+
+// Check if the board is solved
+// Inputs: the board
+// Outputs: true if the board is solved, false otherwise
 bool Sudoku::isSolved(int (&board)[SIZE][SIZE])
 {
     for (int i = 0; i < SIZE; i++)
@@ -546,6 +576,9 @@ bool Sudoku::isSolved(int (&board)[SIZE][SIZE])
     return true;
 }
 
+// Function to save the computer's steps
+// Inputs: the head of the list for the computer's steps
+// Outputs: the computer's steps saved
 void Sudoku::saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file)
 {
     ofstream fout;
@@ -567,6 +600,10 @@ void Sudoku::saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file)
     fout.close();
 }
 
+
+// Function to load the computer or user's steps
+// Inputs: the head of the list for the computer or user's steps
+// Outputs: the computer or user's steps loaded
 void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName, int &steps) //tmpBoard
 {
     if (head!=NULL)

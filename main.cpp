@@ -67,7 +67,7 @@ int main()
             //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
             if(computerBoardHead==NULL && playerBoardHead == NULL)
             {
-                if (count == 1)
+                if (count == 1) // Offset to fix the score incrementing by 2 becuase of the initial and final boards
                 {
                     count++;
                     player1Steps-=2;
