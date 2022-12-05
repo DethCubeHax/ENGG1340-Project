@@ -45,5 +45,9 @@ int main()
             }
             err=sudoku.gameHandler(player1Board);
         }
+        if (choice == "3")
+        {
+            sudoku.finalScreen(player1Board);
+        }
     }
 }

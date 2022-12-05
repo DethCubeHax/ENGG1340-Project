@@ -121,6 +121,9 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
 void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
     if (choice == "3"){
         cout << "Congratulations! You have solved the puzzle!" << endl;
+        cout << "------------------------------------------" << endl;
+        printBoard(board);
+        cout << "------------------------------------------" << endl;
         cout << "Your time is: " << timeSinceBoot() - runTime << " milliseconds." << endl;
         cout << "Would you like to review your steps? (y/n)" << endl;
         string control;
