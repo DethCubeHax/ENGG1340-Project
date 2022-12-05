@@ -24,6 +24,8 @@ uniform_int_distribution<> distrNumber(1, SIZE); // define the range
 extern BoardState *playerBoardHead;
 extern BoardState *computerBoardHead;
 
+extern int player1Steps;
+extern int computerSteps;
 
 uint64_t timeSinceBoot()
 {
@@ -74,6 +76,8 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
         choice = "4";
         return 0;
     }
+    cout << "--------------------" << endl;
+    cout << "Steps taken: " << player1Steps << endl;
     printBoard(board);
     cout << "" << endl;
     string control;
@@ -114,6 +118,7 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
         }
         board[cursorY][cursorX] = stoi(control);
         addToList(playerBoardHead, board);
+        player1Steps++;
         return 0;
     }
 }
@@ -521,7 +526,7 @@ void Sudoku::saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file)
     fout.close();
 }
 
-void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName) //tmpBoard
+void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName, int &steps) //tmpBoard
 {
     if (head!=NULL)
     {
@@ -543,6 +548,8 @@ void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileNa
             }
             
             addToList(head, board);
+            steps++;
         }
     }
+
 }

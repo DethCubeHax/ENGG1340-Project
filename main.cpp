@@ -10,6 +10,9 @@ int tmpBoard[SIZE][SIZE];
 BoardState *playerBoardHead = NULL;
 BoardState *computerBoardHead = NULL;
 
+int player1Steps = 0;
+int computerSteps = 0;
+
 int main()
 {
 
@@ -54,10 +57,8 @@ int main()
         if (choice == "1")
         {
             //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
-            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
-            sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt");
-            sudoku.printBoard(tmpBoard);
-            sudoku.printBoard(player1Board);
+            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt", computerSteps);
+            sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
             choice = "2";
         }
         sudoku.toLowerCase(choice);
