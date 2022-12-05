@@ -499,3 +499,8 @@ bool Sudoku::isSolved(int (&board)[SIZE][SIZE])
     }
     return true;
 }
+
+void Sudoku::saveList(int (&board)[SIZE][SIZE])
+{
+    
+}
