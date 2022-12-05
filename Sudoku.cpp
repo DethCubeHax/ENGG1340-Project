@@ -66,10 +66,10 @@ void Sudoku::welcome(){
                 cout << "Invalid input. Please enter: [ 1 2 3 ]." <<endl;
                 cout<<"========================================="<<endl;
                 valid_input = false;
-            }
-            
-        }
+            }           
     }
+    system("clear");
+}
 
 int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     printBoard(board);
