@@ -52,26 +52,20 @@ int main()
             default:
                 break;
         }
-        
+
         if (choice == "1")
         {
             //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
             sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt", computerSteps);
             sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
-
-            choice = "2";
-            generate = true;
+            choice = "run";
         }
         sudoku.toLowerCase(choice);
         if (choice == "2"){
             system("clear");
-            if (generate == false){
-                system("clear");
-                sudoku.generateBoard(player1Board);
-                generate = true;
-            }
-            err=sudoku.gameHandler(player1Board);
-            madeAMove = true;
+            sudoku.generateBoard(player1Board);
+            generate = true;
+            choice = "run";
         }
         if (choice == "3"){
             system("clear");
@@ -81,8 +75,13 @@ int main()
             system("clear");
             sudoku.finalScreen(player1Board);
         }
+        if (choice == "run")
+        {
+            system("clear");
+            err=sudoku.gameHandler(player1Board);
+            madeAMove = true;
+        }
         if (choice == "exit"){
-            
             break;
         }
     }
