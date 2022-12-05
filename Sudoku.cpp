@@ -167,11 +167,26 @@ void Sudoku::cursorInputHandler(string control){
 
 void Sudoku::showInstruction(){
     
-    cout<<"============ Instruction ================"<<endl;
-    cout<<"This game is about......"<<endl;
-    cout<<"========================================="<<endl;
-    cout<<"Press Enter to continue";
-    cout<<"========================================="<<endl;
+    cout << "============= Instruction ===============" << endl;
+    cout << "\nWelcome to sudoku! The objective of this\n";
+    cout << "game is to fill a 9 × 9 grid with digits\n";
+    cout << "so that each column, each row, and each\n";
+    cout << "of the nine 3 × 3 subgrids that compos\n";
+    cout << "the grid contain all of the digits from\n";
+    cout << "1 to 9.\n\n";
+    cout << "Controls:\n";
+    cout << "The cursor X shows your current position.\n\n";
+    cout << "W -> Move up one block\n";
+    cout << "A -> Move left one block\n";
+    cout << "S -> Move down one block\n";
+    cout << "D -> Move right one block\n\n";
+    cout << "Press enter after every move, then insert\n";
+    cout << "a number.\n\n";
+
+
+    cout << "=========================================" << endl;
+    cout << "Press Enter to continue" << endl;
+    cout << "=========================================" << endl;
     // cin.ignore();
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
     choice = "";
