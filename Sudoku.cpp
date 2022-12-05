@@ -231,6 +231,7 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
     remove("computerBoard.txt");
     saveBoard(board, computerBoardHead, "computerBoard.txt");
     addToList(playerBoardHead, board);
+    readOrSaveBoard(board, 'w');
 }
 
 void Sudoku::printBoard(int (&board)[SIZE][SIZE])
@@ -532,9 +533,7 @@ void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileNa
             {
                 for (int j = 0; j < SIZE; j++)
                 {
-                    char tmp;
-                    fin >> tmp;
-                    board[i][j] = tmp - '0';
+                    fin >> board[i][j];
                 }
             }
             addToList(head, board);

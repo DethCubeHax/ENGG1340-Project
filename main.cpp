@@ -57,7 +57,9 @@ int main()
             //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
             sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt", computerSteps);
             sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
+
             choice = "2";
+            generated = true;
         }
         sudoku.toLowerCase(choice);
         if (choice == "2"){
