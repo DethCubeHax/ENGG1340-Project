@@ -17,6 +17,7 @@ int main()
     int err=0;
     char *cont;
     bool generated = false;
+    bool madeAMove = false;
     while (choice != "exit"){
         if (choice == "")
         {
@@ -57,7 +58,7 @@ int main()
             sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt");
             sudoku.printBoard(tmpBoard);
             sudoku.printBoard(player1Board);
-            choice = "exit";
+            choice = "2";
         }
         sudoku.toLowerCase(choice);
         if (choice == "2"){
@@ -68,6 +69,7 @@ int main()
                 generated = true;
             }
             err=sudoku.gameHandler(player1Board);
+            madeAMove = true;
         }
         if (choice == "3"){
             system("clear");
@@ -85,6 +87,10 @@ int main()
     cout << "\n\n\n\x1B[38;5;30m--\x1B[38;5;66m-。\x1B[38;5;102m--。\x1B[38;5;138m---";
     cout << "\x1B[38;5;174mBye \x1B[38;5;210mbye \x1B[38;5;210m(^･ω\x1B[38;5;174m･^)";
     cout << "\x1B[38;5;138m---\x1B[38;5;102m。--\x1B[38;5;66m。-\x1B[38;5;30m--\n\n\n" << endl;
-    sudoku.saveBoard(player1Board, playerBoardHead, "playerBoard.txt");
-    sudoku.saveBoard(tmpBoard, computerBoardHead, "computerBoard.txt");
+    if (madeAMove)
+    {
+        sudoku.saveBoard(player1Board, playerBoardHead, "playerBoard.txt");
+        sudoku.saveBoard(tmpBoard, computerBoardHead, "computerBoard.txt");
+    }
+
 }
