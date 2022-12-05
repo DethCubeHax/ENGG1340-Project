@@ -56,8 +56,11 @@ int main()
         if (choice == "1")
         {
             //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
-            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt", computerSteps);
-            sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
+            if(computerBoardHead==NULL && playerBoardHead == NULL)
+            {
+                sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt", computerSteps);
+                sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
+            }
             choice = "run";
         }
         sudoku.toLowerCase(choice);
