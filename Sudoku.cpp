@@ -125,12 +125,12 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
 }
 
 void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
-    if (choice == "4"){
         cout << "Congratulations! You have solved the puzzle!" << endl;
         cout << "------------------------------------------" << endl;
         printBoard(board);
         cout << "------------------------------------------" << endl;
         cout << "Your time is: " << timeSinceBoot() - runTime << " milliseconds." << endl;
+        cout << "Your steps are: " << player1Steps << "compared to computer's: " << computerSteps << "." << endl;
         cout << "Would you like to review your steps? (y/n)" << endl;
         string control;
         cin >> control;
@@ -144,11 +144,8 @@ void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
         else{
             cout << "Thank you for playing!" << endl;
         }
-    }
-    else{
         cout << "You have quit the game." << endl;
         choice = "exit";
-    }
 }
 
 void Sudoku::toLowerCase(string &str){
@@ -229,6 +226,7 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
         generateBoard(board);
     }
     remove("computerBoard.txt");
+    remove("playerBoard.txt");
     saveBoard(board, computerBoardHead, "computerBoard.txt");
     addToList(playerBoardHead, board);
     readOrSaveBoard(board, 'w');
@@ -463,6 +461,10 @@ void Sudoku::printList(BoardState *playerHead, BoardState *computerHead)
     int count = 0;
     while (playerTraverser != NULL || computerTraverser != NULL)
     {
+        if (playerTraverser == NULL || computerTraverser == NULL)
+        {
+            break;
+        }
         cout << "--------------------" << endl;
         cout << "Your move number " << count << " :" << endl;
         cout << "--------------------" << endl;

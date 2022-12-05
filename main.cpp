@@ -17,7 +17,7 @@ int main()
 {
     int err=0;
     char *cont;
-    bool generated = false;
+    bool generate = true;
     bool madeAMove = false;
     while (choice != "exit"){
         if (choice == "")
@@ -35,7 +35,7 @@ int main()
         switch (err)
         {
             case 1:
-                cout << "You cannot erase a pre-generated square." << endl;
+                cout << "You cannot erase a pre-generate square." << endl;
                 break;
             case 2:
                 cout << "The command you entered is invalid." << endl;
@@ -44,7 +44,7 @@ int main()
                 cout << "The number you entered is invalid." << endl;
                 break;
             case 4:
-                cout << "You cannot overwrite a pre-generated square." << endl;
+                cout << "You cannot overwrite a pre-generate square." << endl;
                 break;
             case 5:
                 cout << "Game has been saved." << endl;
@@ -52,6 +52,7 @@ int main()
             default:
                 break;
         }
+        
         if (choice == "1")
         {
             //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
@@ -59,15 +60,15 @@ int main()
             sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
 
             choice = "2";
-            generated = true;
+            generate = true;
         }
         sudoku.toLowerCase(choice);
         if (choice == "2"){
             system("clear");
-            if (generated == false){
+            if (generate == false){
                 system("clear");
                 sudoku.generateBoard(player1Board);
-                generated = true;
+                generate = true;
             }
             err=sudoku.gameHandler(player1Board);
             madeAMove = true;
