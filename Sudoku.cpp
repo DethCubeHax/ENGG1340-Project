@@ -1,3 +1,4 @@
+// Includes
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -10,6 +11,7 @@
 #include "Sudoku.h"
 #include "GlobalVars.h"
 
+// Saving energy for our fingers
 using namespace std;
 using namespace std::chrono;
 using std::ostream;
@@ -21,25 +23,33 @@ mt19937 genNumber(number()); // seed the generator
 uniform_int_distribution<> distrSquare(0, SIZE-1); // define the range
 uniform_int_distribution<> distrNumber(1, SIZE); // define the range
 
+// Link the board state to the variable in main.cpp
 extern BoardState *playerBoardHead;
 extern BoardState *computerBoardHead;
 
+// Link the player and computer's steps to the variables in main.cpp
 extern int player1Steps;
 extern int computerSteps;
 
+// Function to get the current time since 1970
 uint64_t timeSinceBoot()
 {
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
+// Get the time at Runtime
 uint64_t runTime = timeSinceBoot();
 
+// Function to check if a number is valid at a given x, y
 bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE])
 {
     if (checkRow(number, x, board) && checkColumn(number, y, board) && checkBlock(number, x, y, board) ) return true;
     return false;
 }
 
+// Function to display the welcome screen
+// Handles user inputs to determine which state the game will be in
+// at the next iteration
 
 void Sudoku::welcome(){
     
@@ -70,7 +80,11 @@ void Sudoku::welcome(){
     }
 }
 
+// Function to handle the game during runtime
+// Inputs: the player's board
+// Outputs: an integer determining whether the user's input was valid
 int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
+    // If the board is solved, return 0
     if (isSolved(board)) 
     {
         choice = "4";
@@ -83,17 +97,22 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     string control;
     cin >> control;
     toLowerCase(control);
+    // If the user wants to exit, return 5
     if (control == "exit"){
         return 5;
     }
+    // If the command is invalid, return 2
     if (control.length() > 1)
     {
         return 2;
     }
+    // If the user wants to move the cursor, call the cursorInputHandler() function
     if (control == "w" || control == "a" || control == "s" || control == "d"){
         cursorInputHandler(control);
         return 0;
     }
+    // If the user wants to erase a number
+    // Verify that the number is not a preset number
     if (stoi(control) == 0)
     {
         if(playerBoardHead->board[cursorY][cursorX] != 0)
@@ -105,12 +124,15 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
         readOrSaveBoard(board, 'w');
         return 0;
     }
+    // If the user inputs a number too large or low, return 2
     else if(stoi(control) > 10 || stoi(control) < 0){
         return 2;
     }
+    // If the number is not valid at square x,y return 3
     if(! numberIsPossible(stoi(control), cursorY, cursorX, board)){
         return 3;
     }
+    // If the number is valid, add it to the board
     else{
         if (playerBoardHead->board[cursorY][cursorX] != 0)
         {
@@ -124,6 +146,10 @@ int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){
     }
 }
 
+// Function to display the final screen
+// Inputs: the player's board
+// Outputs: Displays the number of steps and the time taken to solve,
+//          and asks if the user wants to review the steps taken
 void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
         cout << "\x1B[38;5;38m=========================================" << endl;
         cout << "Congratulations!" << endl;
@@ -150,12 +176,17 @@ void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
         choice = "exit";
 }
 
+
+// Function to convert a string to lowercase
+// Inputs: a string
 void Sudoku::toLowerCase(string &str){
     for (int i = 0; i < str.length(); i++){
         str[i] = tolower(str[i]);
     }
 }
-   
+
+// Function to handle the user's input when moving the cursor
+// Inputs: the user's input
 void Sudoku::cursorInputHandler(string control){
     if (control == "a" && cursorX != 0){
         cursorX--;
@@ -171,6 +202,9 @@ void Sudoku::cursorInputHandler(string control){
     }
 }
 
+// Function to display the instructions
+// Inputs: none
+// Outputs: Displays the instructions to the screen
 void Sudoku::showInstruction(){
     system("clear");
     cout << "\x1B[38;5;30m============= Instructions ===============" << endl;
@@ -199,34 +233,42 @@ void Sudoku::showInstruction(){
     
 }
 
-
+// Function to generate a random sudoku board
+// Inputs: the board
+// Outputs: a random sudoku board
 void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
 {
+    // Get 17 random numbers at 17 random positions
     for (int i = 0; i<18; i++)
     {
         int x = distrSquare(genSquare);
         int y = distrSquare(genSquare);
         int num = distrNumber(genNumber);
+        // If the number is valid at square x,y, add it to the board
         if (numberIsPossible(num, x, y, board) && board[x][y] == 0)
         {
             board[x][y] = num;
         }
+        // Else, generate a new number
         else
         {
             i--;
         }
     }
 
+    // Create a copy of the board
     int tmpBoard[SIZE][SIZE] = {0};
-
     copyBoard(tmpBoard, board);
 
+    // Get the current time
     runTime = timeSinceBoot();
+    // If the board is not solvable, generate a new board
     if (!solveBoard(tmpBoard))
     {
         eraseBoard(board);
         generateBoard(board);
     }
+    // If the board has been generated, save it
     remove("computerBoard.txt");
     remove("playerBoard.txt");
     saveBoard(board, computerBoardHead, "computerBoard.txt");
@@ -234,6 +276,10 @@ void Sudoku::generateBoard(int (&board)[SIZE][SIZE])
     readOrSaveBoard(board, 'w');
 }
 
+// Function to print the board
+// Inputs: the board
+// Outputs: the board with the borders
+//         and the cursor
 void Sudoku::printBoard(int (&board)[SIZE][SIZE])
 {
     for ( int i = 0 ; i < SIZE ; i++ )

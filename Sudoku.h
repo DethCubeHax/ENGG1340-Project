@@ -1,7 +1,11 @@
+// If this header file is not defined, define it
 #ifndef SUDOKU_H
 #define SUDOKU_H
+// Includes
 #include "GlobalVars.h"
 
+// Class to define the function prototypes of the Sudoku game
+// These functions are defined in Sudoku.cpp
 class Sudoku
 {
     public:
@@ -28,9 +32,7 @@ class Sudoku
         void eraseBoard(int (&board)[SIZE][SIZE]);
         void eraseList(BoardState *&head);
         void cursorInputHandler(string control);
-        bool isSolved(int (&board)[SIZE][SIZE]);
-        
-        
+        bool isSolved(int (&board)[SIZE][SIZE]);   
 };
 
 #endif
