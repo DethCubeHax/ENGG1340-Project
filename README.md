@@ -3,7 +3,7 @@
 ## Introduction
 This is a Sudoku game written in C++ using standard libraries. The game is consistent with the traditional Sudoku game, whereby:
 - The game is played on a 9x9 grid;
-- No number can be repeated in a row, column or 3x3 grid.
+- No number can be repeated in a row, column and 3x3 grid.
 
 The user is greeted with a menu, where they can choose to start a new game, load a saved game, or view the instructions. 
 The user can also choose to exit the game at any time by typing "exit" and then hitting enter.
