@@ -174,26 +174,26 @@ void Sudoku::cursorInputHandler(string control){
 
 void Sudoku::showInstruction(){
     
-    cout << "============= Instruction ===============" << endl;
-    cout << "\nWelcome to sudoku! The objective of this\n";
+    cout << "\x1B[38;5;30m============= Instruction ===============" << endl;
+    cout << "\x1B[38;5;66m\nWelcome to sudoku! The objective of this\n";
     cout << "game is to fill a 9 × 9 grid with digits\n";
     cout << "so that each column, each row, and each\n";
     cout << "of the nine 3 × 3 subgrids that compos\n";
     cout << "the grid contain all of the digits from\n";
     cout << "1 to 9.\n\n";
-    cout << "Controls:\n";
+    cout << "\x1B[38;5;102mControls:\n\n";
     cout << "The cursor X shows your current position.\n\n";
-    cout << "W -> Move up one block\n";
+    cout << "\x1B[38;5;138mW -> Move up one block\n";
     cout << "A -> Move left one block\n";
     cout << "S -> Move down one block\n";
     cout << "D -> Move right one block\n\n";
-    cout << "Press enter after every move, then insert\n";
+    cout << "\x1B[38;5;174mPress enter after every move, then insert\n";
     cout << "a number.\n\n";
 
 
     cout << "=========================================" << endl;
-    cout << "Press Enter to continue" << endl;
-    cout << "=========================================" << endl;
+    cout << "\x1B[38;5;210mPress Enter to continue" << endl;
+    cout << "=========================================\x1B[38;5;255m\n" << endl;
     // cin.ignore();
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
     choice = "";
