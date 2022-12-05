@@ -48,6 +48,12 @@ int main()
             default:
                 break;
         }
+        if (choice == "1")
+        {
+            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
+            //sudoku.printBoard(tmpBoard);
+            choice = "exit";
+        }
         sudoku.toLowerCase(choice);
         if (choice == "2"){
             system("clear");

@@ -16,7 +16,7 @@ class Sudoku
         void generateBoard (int (&board)[SIZE][SIZE]);
         bool solveBoard(int (&board)[SIZE][SIZE]);
         void printList(BoardState *playerHead, BoardState *computerHead);
-        void loadList(BoardState *&head, int (&board)[SIZE][SIZE]);
+        void loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName);
     private:
         bool checkRow(int number, int y, int (&board)[SIZE][SIZE]);
         bool checkColumn(int number, int x, int (&board)[SIZE][SIZE]);
