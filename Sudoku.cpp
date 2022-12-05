@@ -53,7 +53,7 @@ void Sudoku::welcome(){
         cout << "\x1B[38;5;138m3. Instructions\n" << endl;
         cout<<"========================================="<<endl;
         cout << "\x1B[38;5;174mType [ exit ] to quit" << endl;
-        cout<<"\x1B[38;5;210m========================================="<<endl;
+        cout<<"\x1B[38;5;210m=========================================\x1B[38;5;255m"<<endl;
         cin >> choice;
         cin.ignore();
         valid_input = true;
