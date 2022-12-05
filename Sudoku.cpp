@@ -42,14 +42,18 @@ bool Sudoku::numberIsPossible(int number, int x, int y, int (&board)[SIZE][SIZE]
 void Sudoku::welcome(){
     
     bool valid_input = false;
-    cout << "Hello! Welcome to sudoku!" << endl;
+    cout<<"\x1B[38;5;30m========================================="<<endl;
+    cout << "       Helloo! Welcome to sudoku!" << endl;
+    cout<<"\x1B[38;5;66m=========================================\n"<<endl;
     
     while (!valid_input){
-        cout << "Please choose an option:" << endl;
-        cout << "1. Load game" << endl;
+        cout << "Please choose an option:\n" << endl;
+        cout << "\x1B[38;5;102m1. Load game" << endl;
         cout << "2. New game" << endl;
-        cout << "3. Instructions" << endl;
-        cout << "Type [ exit ] to quit" << endl;
+        cout << "\x1B[38;5;138m3. Instructions\n" << endl;
+        cout<<"========================================="<<endl;
+        cout << "\x1B[38;5;174mType [ exit ] to quit" << endl;
+        cout<<"\x1B[38;5;210m========================================="<<endl;
         cin >> choice;
         cin.ignore();
         valid_input = true;
@@ -175,7 +179,7 @@ void Sudoku::cursorInputHandler(string control){
 
 void Sudoku::showInstruction(){
     
-    cout << "\x1B[38;5;30m============= Instruction ===============" << endl;
+    cout << "\x1B[38;5;30m============= Instructions ===============" << endl;
     cout << "\x1B[38;5;66m\nWelcome to sudoku! The objective of this\n";
     cout << "game is to fill a 9 × 9 grid with digits\n";
     cout << "so that each column, each row, and each\n";
