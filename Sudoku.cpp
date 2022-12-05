@@ -418,6 +418,7 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
     if (timeSinceBoot() - runTime > 100)
     {
         eraseList(computerBoardHead);
+        computerSteps=0;
         return false;
     }
     for (int i = 0; i < SIZE; i++)
@@ -440,6 +441,7 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
                         {
                             board[i][j] = 0;
                             addToList(computerBoardHead, board);
+                            computerSteps++;
                         }
                     }
                 }
