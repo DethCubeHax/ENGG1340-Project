@@ -524,9 +524,12 @@ void Sudoku::saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file)
         traverser = traverser->next;
     }
     fout.close();
+    fout.open("steps.txt");
+    fout << player1Steps << ' ' << computerSteps << ' ';
+    fout.close();
 }
 
-void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName, int &steps) //tmpBoard
+void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName) //tmpBoard
 {
     if (head!=NULL)
     {
@@ -543,13 +546,18 @@ void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileNa
                 for (int j = 0; j < SIZE; j++)
                 {
                     fin >> board[i][j];
-
                 }
             }
-            
             addToList(head, board);
-            steps++;
         }
     }
+    remove(fileName.c_str());
+    fin.close();
 
+    ifstream fin2("steps.txt");
+    if(fin2.is_open())
+    {
+        fin2 >> player1Steps >> computerSteps;
+    }
+    fin2.close();
 }
