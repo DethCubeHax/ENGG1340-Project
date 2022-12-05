@@ -380,8 +380,6 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
                     {
                         board[i][j] = k;
                         addToList(computerBoardHead, board);
-                        saveBoard(board, "computerBoard.txt");
-
                         if (solveBoard(board))
                         {
                             return true;
@@ -502,17 +500,23 @@ bool Sudoku::isSolved(int (&board)[SIZE][SIZE])
     return true;
 }
 
-void Sudoku::saveBoard(int (&board)[SIZE][SIZE], string file)
+void Sudoku::saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file)
 {
     ofstream fout;
-    fout.open(file, ios::app);
-    for ( int i = 0 ; i < SIZE ; i++ )
+    fout.open(file);
+    BoardState *traverser = head;
+    while (traverser != NULL)
     {
-        for ( int j = 0 ; j < SIZE ; j++ )
+        for (int i = 0; i < SIZE; i++)
         {
-            fout<<board[i][j]<<' ';
+            for (int j = 0; j < SIZE; j++)
+            {
+                fout << traverser->board[i][j] << ' ';
+            }
+            fout << endl;
         }
-        fout<<endl;
+        fout << endl;
+        traverser = traverser->next;
     }
     fout.close();
 }
@@ -523,28 +527,22 @@ void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileNa
     {
         eraseList(head);
     }
-    ifstream fin(fileName);                 // Open the file
-    int yCount = 0;
-    string line;
-    while (getline(fin, line))
+    ifstream fin(fileName);
+    if (fin.is_open())
     {
-        istringstream iss(line);
-        char w;
-        int xCount = 0;
-        while (iss >> w)
+        eraseBoard(board);
+        while (!fin.eof())
         {
-            board[yCount][xCount] = int(w) - 48;
-            xCount++;
-        }
-        yCount++;
-        if (xCount>=8 && yCount>=8)
-        {
-            xCount=0;
-            yCount=0;
-            printBoard(board);
+            for (int i = 0; i < SIZE; i++)
+            {
+                for (int j = 0; j < SIZE; j++)
+                {
+                    fin >> board[i][j];
+
+                }
+            }
+            
             addToList(head, board);
         }
-        saveBoard(board, "tmpBoard.txt");
     }
-    fin.close();
 }
