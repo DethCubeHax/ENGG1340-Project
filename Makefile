@@ -7,7 +7,7 @@ main.o: main.cpp Sudoku.h GlobalVars.h
 	g++ $(flags) -c $<
 sudoku: main.o Sudoku.o GlobalVars.o
 	g++ $(flags) $^ -o $@
-	rm -rf *.o
+	rm -rf *.o *.gch
 .PHONY: clean
 clean:
-	rm -f *.o sudoku
+	rm -f *.o *.gch sudoku
