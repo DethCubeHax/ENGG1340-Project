@@ -50,7 +50,7 @@ int main()
         }
         if (choice == "1")
         {
-            sudoku.loadList(computerBoardHead, tmpBoard);
+            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
             //sudoku.printBoard(tmpBoard);
             choice = "exit";
         }

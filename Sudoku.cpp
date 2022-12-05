@@ -517,11 +517,13 @@ void Sudoku::saveBoard(int (&board)[SIZE][SIZE], string file)
     fout.close();
 }
 
-void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE]) //tmpBoard
+void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName) //tmpBoard
 {
-    
-    eraseList(head);
-    ifstream fin("computerBoard.txt");                 // Open the file
+    if (head!=NULL)
+    {
+        eraseList(head);
+    }
+    ifstream fin(fileName);                 // Open the file
     int yCount = 0;
     string line;
     while (getline(fin, line))
