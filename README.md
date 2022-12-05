@@ -102,52 +102,81 @@ int main()
 {
     int err=0;
     char *cont;
-    bool generated = false;
+    bool generate = true;
+    bool madeAMove = false;
     while (choice != "exit"){
-        system("clear");
         if (choice == "")
         {
+            system("clear");
+            if (err != 0) err = 0;
             sudoku.welcome();
-        }
-        switch (err)
-        {
-        case 1:
-            cout << "You cannot erase a pre-generated square." << endl;
-            break;
-        case 2:
-            cout << "The command you entered is invalid." << endl;
-            break;
-        case 3:
-            cout << "The number you entered is invalid." << endl;
-            break;
-        case 4:
-            cout << "You cannot overwrite a pre-generated square." << endl;
-            break;
-        case 5:
-            cout << "Game has been saved." << endl;
-            choice = "exit";
-        default:
-            break;
-        }
-        if (choice == "2"){
-            if (generated == false){
-                sudoku.generateBoard(player1Board);
-                generated = true;
+            if (choice == "exit")
+            {
+                system("clear");
+                break;
             }
-            err=sudoku.gameHandler(player1Board);
-        }
-        if (choice == "3"){
-            
         }
 
+        switch (err)
+        {
+            case 1:
+                cout << "You cannot erase a pre-generate square." << endl;
+                break;
+            case 2:
+                cout << "The command you entered is invalid." << endl;
+                break;
+            case 3:
+                cout << "The number you entered is invalid." << endl;
+                break;
+            case 4:
+                cout << "You cannot overwrite a pre-generate square." << endl;
+                break;
+            case 5:
+                cout << "Game has been saved." << endl;
+                choice = "";
+            default:
+                break;
+        }
+
+        if (choice == "1")
+        {
+            //sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt");
+            sudoku.loadList(computerBoardHead, tmpBoard, "computerBoard.txt", computerSteps);
+            sudoku.loadList(playerBoardHead, player1Board, "playerBoard.txt", player1Steps);
+            choice = "run";
+        }
+        sudoku.toLowerCase(choice);
+        if (choice == "2"){
+            system("clear");
+            sudoku.generateBoard(player1Board);
+            generate = true;
+            choice = "run";
+        }
+        if (choice == "3"){
+            system("clear");
+            sudoku.showInstruction();
+        }
         if (choice == "4"){
+            system("clear");
             sudoku.finalScreen(player1Board);
         }
+        if (choice == "run")
+        {
+            system("clear");
+            err=sudoku.gameHandler(player1Board);
+            madeAMove = true;
+        }
+        if (choice == "exit"){
+            break;
+        }
     }
+    cout << "\n\n\n\x1B[38;5;30m--\x1B[38;5;66m-。\x1B[38;5;102m--。\x1B[38;5;138m---";
+    cout << "\x1B[38;5;174mBye \x1B[38;5;210mbye \x1B[38;5;210m(^･ω\x1B[38;5;174m･^)";
+    cout << "\x1B[38;5;138m---\x1B[38;5;102m。--\x1B[38;5;66m。-\x1B[38;5;30m--\n\n\n" << endl;
 }
 ```
 <p>
-It uses the choice variable to determine the game state. The welcome() function is called when the game is first loaded, when the choice variable is "". If the choice variable is "2", the gameHandler() function is called, which handles the game logic. If the choice variable is "3", the instructions are displayed. If the choice variable is "4", the finalScreen() function is called, which displays the final screen. The user can exit the game by typing "exit" into the terminal, which will set the choice variable to "exit", and the game will end.
+It uses the choice variable to determine the game state the welcome() function is called when the game is first loaded, when the choice variable is "". If the choice variable is "2", the generateBoard() function is called, which generates the game board, which handles the game logic. If the choice variable is "3", the instructions are displayed. If the choice variable is "4", the finalScreen() function is called, which displays the final screen. Finally, the game functionality is driven by the gameHandler() function. The user can exit the game by typing "exit" into the terminal, which will set the choice variable to "exit", and the game will end.
 
 <p>
 
@@ -164,6 +193,7 @@ class Sudoku
 {
     public:
         void welcome();
+        void toLowerCase(string &str);
         int gameHandler(int (&board)[SIZE][SIZE]);
         void finalScreen(int (&board)[SIZE][SIZE]);
         void showInstruction();
@@ -173,6 +203,9 @@ class Sudoku
         void generateBoard (int (&board)[SIZE][SIZE]);
         bool solveBoard(int (&board)[SIZE][SIZE]);
         void printList(BoardState *playerHead, BoardState *computerHead);
+        void loadList(BoardState *&head, int (&board)[SIZE][SIZE], string fileName, int &steps);
+        void saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file);
+        
     private:
         bool checkRow(int number, int y, int (&board)[SIZE][SIZE]);
         bool checkColumn(int number, int x, int (&board)[SIZE][SIZE]);
@@ -182,7 +215,6 @@ class Sudoku
         void eraseBoard(int (&board)[SIZE][SIZE]);
         void eraseList(BoardState *&head);
         void cursorInputHandler(string control);
-        void toLowerCase(string &str);
         bool isSolved(int (&board)[SIZE][SIZE]);
 };
 
@@ -445,6 +477,64 @@ void Sudoku::finalScreen(int (&board)[SIZE][SIZE]){
 }
 ```
 We first check if the user has solved the puzzle. If they have, we congratulate them, display the board, and display their taken to solve. We then ask if they want to review their steps. If they do, we call the printList() function. If they don't, we thank them for playing and exit the game.
+
+The saveBoard() function saves the computer board to a file.
+
+```C++
+void Sudoku::saveBoard(int (&board)[SIZE][SIZE], BoardState *&head, string file)
+{
+    ofstream fout;
+    fout.open(file);
+    BoardState *traverser = head;
+    while (traverser != NULL)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                fout << traverser->board[i][j] << ' ';
+            }
+            fout << endl;
+        }
+        fout << endl;
+        traverser = traverser->next;
+    }
+    fout.close();
+}
+```
+It traverses through the linked list, and saves each board stored in the struct to a file called "computerBoard.txt".
+
+The readOrSaveBoard() function can both read or write the player board from a file.
+
+```C++
+void Sudoku::readOrSaveBoard(int (&board)[SIZE][SIZE], char args)
+{   
+    if (args == 'r')
+    {
+        ifstream fin("steps.txt");                 // Open the file
+        if (!fin)                                 // If the file does not exist
+        {
+            cout << "File does not exist." << endl;
+        }
+
+    }
+
+    if (args == 'w')
+    {
+        ofstream fout("playerBoard.txt", ios::app);
+        for ( int i = 0 ; i < SIZE ; i++ )
+        {
+            for ( int j = 0 ; j < SIZE ; j++ )
+            {
+                fout<<board[i][j]<<' ';
+            }
+            fout<<endl;
+        }
+        fout.close();
+    }
+}
+```
+This function allows us to save the user's board to a file called "playerBoard.txt" or read the user's board from a file, each time the user makes a move.
 
 #### Helper Functions
 The timeSinceBoot() function returns the time since the program started.
