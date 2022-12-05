@@ -48,30 +48,29 @@ void Sudoku::welcome(){
         cout << "2. New game" << endl;
         cout << "3. Instructions" << endl;
         cout << "Type [ exit ] to quit" << endl;
-            cin >> choice;
-            cin.ignore();
+        cin >> choice;
+        cin.ignore();
+        valid_input = true;
+        if (choice == "1"){
             valid_input = true;
-            if (choice == "1"){
-                valid_input = true;
-            }
-            else if (choice == "2"){
-                valid_input = true;
-            }
-            else if (choice == "3"){
-                showInstruction();
-                valid_input = true;
-            }
-            else if (choice =="exit"){
-                valid_input = true;
-            }
-            else{
-                cout<<"========================================="<<endl;
-                cout << "Invalid input. Please enter: [ 1 2 3 ]." <<endl;
-                cout<<"========================================="<<endl;
-                valid_input = false;
-            }           
+        }
+        else if (choice == "2"){
+            valid_input = true;
+        }
+        else if (choice == "3"){
+            showInstruction();
+            valid_input = true;
+        }
+        else if (choice =="exit"){
+            valid_input = true;
+        }
+        else{
+            cout<<"========================================="<<endl;
+            cout << "Invalid input. Please enter: [ 1 2 3 ]." <<endl;
+            cout<<"========================================="<<endl;
+            valid_input = false;
+        }           
     }
-    system("clear");
 }
 
 int Sudoku::gameHandler(int (&board)[SIZE][SIZE]){

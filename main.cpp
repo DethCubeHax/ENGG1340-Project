@@ -20,6 +20,10 @@ int main()
         if (choice == "")
         {
             sudoku.welcome();
+            if (choice == "exit")
+            {
+                break;
+            }
         }
         switch (err)
         {

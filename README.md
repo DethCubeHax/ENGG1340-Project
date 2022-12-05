@@ -123,6 +123,9 @@ int main()
         case 4:
             cout << "You cannot overwrite a pre-generated square." << endl;
             break;
+        case 5:
+            cout << "Game has been saved." << endl;
+            choice = "exit";
         default:
             break;
         }
