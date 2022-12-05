@@ -4,6 +4,7 @@
         "ostream": "cpp",
         "istream": "cpp",
         "chrono": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "iosfwd": "cpp"
     }
 }

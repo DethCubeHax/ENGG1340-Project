@@ -45,6 +45,12 @@ int main()
         default:
             break;
         }
+        if (choice == "1")
+        {
+            sudoku.loadList(computerBoardHead, tmpBoard);
+            //sudoku.printBoard(tmpBoard);
+            choice = "exit";
+        }
         if (choice == "2"){
             if (generated == false){
                 sudoku.generateBoard(player1Board);

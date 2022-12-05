@@ -387,6 +387,8 @@ bool Sudoku::solveBoard(int (&board)[SIZE][SIZE])
                     {
                         board[i][j] = k;
                         addToList(computerBoardHead, board);
+                        saveBoard(board, "computerBoard.txt");
+
                         if (solveBoard(board))
                         {
                             return true;
@@ -410,6 +412,7 @@ void Sudoku::addToList(BoardState *&head, int (&board)[SIZE][SIZE])
     BoardState *newState = new BoardState();
     copyBoard(newState->board, board);
     newState->next = NULL;
+    
     if (head == NULL)
     {
         head = newState;
@@ -421,9 +424,11 @@ void Sudoku::addToList(BoardState *&head, int (&board)[SIZE][SIZE])
     while (traverser->next != NULL)
     {
         traverser = traverser->next;
+        
     }
     traverser->next = newState;
     newState->previous = traverser;
+    
 }
 
 void Sudoku::copyBoard(int (&board1)[SIZE][SIZE], int (&board2)[SIZE][SIZE])
@@ -451,6 +456,10 @@ void Sudoku::eraseBoard(int (&board)[SIZE][SIZE])
 void Sudoku::eraseList(BoardState *&head)
 {
     BoardState *traverser = head;
+    if (head == NULL)
+    {
+        return;
+    }
     while (traverser != NULL)
     {
         BoardState *tmp = traverser;
@@ -500,7 +509,47 @@ bool Sudoku::isSolved(int (&board)[SIZE][SIZE])
     return true;
 }
 
-void Sudoku::saveList(int (&board)[SIZE][SIZE])
+void Sudoku::saveBoard(int (&board)[SIZE][SIZE], string file)
+{
+    ofstream fout;
+    fout.open(file, ios::app);
+    for ( int i = 0 ; i < SIZE ; i++ )
+    {
+        for ( int j = 0 ; j < SIZE ; j++ )
+        {
+            fout<<board[i][j]<<' ';
+        }
+        fout<<endl;
+    }
+    fout.close();
+}
+
+void Sudoku::loadList(BoardState *&head, int (&board)[SIZE][SIZE]) //tmpBoard
 {
     
+    eraseList(head);
+    ifstream fin("computerBoard.txt");                 // Open the file
+    int yCount = 0;
+    string line;
+    while (getline(fin, line))
+    {
+        istringstream iss(line);
+        char w;
+        int xCount = 0;
+        while (iss >> w)
+        {
+            board[yCount][xCount] = int(w) - 48;
+            xCount++;
+        }
+        yCount++;
+        if (xCount>=8 && yCount>=8)
+        {
+            xCount=0;
+            yCount=0;
+            printBoard(board);
+            addToList(head, board);
+        }
+        saveBoard(board, "tmpBoard.txt");
+    }
+    fin.close();
 }
